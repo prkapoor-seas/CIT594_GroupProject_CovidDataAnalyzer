@@ -1,6 +1,7 @@
 package edu.upenn.cit594.processor;
 
 import edu.upenn.cit594.util.PopulationData;
+import edu.upenn.cit594.util.PropertiesData;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * for the PopulationData object
  */
 public class LivableAreaRetriever implements PopulationDataRetriever {
-    public List<Double> returnData(PopulationData data) {
-        return data.getLivableAreas();
+    public double returnData(PropertiesData data) {
+        return data.getTotalLivableArea();
     }
 }

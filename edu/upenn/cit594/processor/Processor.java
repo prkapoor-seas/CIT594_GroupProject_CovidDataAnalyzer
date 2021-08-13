@@ -5,20 +5,26 @@ import java.util.TreeMap;
 
 import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
+import edu.upenn.cit594.datamanagement.PropertiesReader;
 import edu.upenn.cit594.util.CovidData;
 import edu.upenn.cit594.util.PopulationData;
+import edu.upenn.cit594.util.PropertiesData;
 
 public class Processor {
 
 	protected CovidDataReader covidReader;
 	protected List<CovidData> covidData;
 	protected PopulationDataReader popReader;
+	protected PropertiesReader propertiesReader;
 	protected List<PopulationData> popData;
+	protected List<PropertiesData> propertiesData;
 	
 	// memoization
 	private static int totalPopulation = 0;
 	private static TreeMap<Integer, Double> fullMap = new TreeMap<Integer, Double>();
 	private static TreeMap<Integer, Double> partialMap = new TreeMap<Integer, Double>();
+	private static int averageMarketValue = 0;
+	private static int averageLivableArea = 0;
 	
 	
 	public Processor(CovidDataReader covidReader, PopulationDataReader popReader) throws Exception{
@@ -26,6 +32,7 @@ public class Processor {
 		this.covidData = covidReader.getAllRows();
 		this.popReader = popReader;
 		this.popData = popReader.getAllRows();
+		this.propertiesData = propertiesReader.getAllRows();
 	}
 	
 	public int getTotalPopulationAllZips() {
@@ -115,29 +122,35 @@ public class Processor {
 	 * From a list of PopulationData objects, calculates the average of the list of doubles specified by the dataRetriever parameter
 	 * Implements the Strategy Pattern
 	 * @param listOfData list of PopulationData objects
-	 * @param zipCode for which the average value is calculated
+	 * @param zipCode zip code to calculate average for
 	 * @param dataRetriever specifies what to find the average of (market value or living area)
 	 * @return average of the specified list of data, truncated as an Integer
 	 */
-	public static Integer getAverageValue(List<PopulationData> listOfData, int zipCode, PopulationDataRetriever dataRetriever) {
+	public static Integer getAverageValue(List<PropertiesData> listOfData, int zipCode, PopulationDataRetriever dataRetriever) {
 		// initialize variables
 		double totalOfValues = 0.0;
 		int count = 0;
-		PopulationData data = null;
-		List<Double> valuesToAverage;
-		// iterate over list of PopulationData objects to find data corresponding to zip code
-		for (PopulationData entry : listOfData) {
-			if (entry.getZipcode() == zipCode) {
-				data = entry;
+		// iterate over list of PropertiesData objects to find data corresponding to zip code
+		for (PropertiesData data : listOfData) {
+			if (data.getZipcode() == zipCode) {
+				totalOfValues += dataRetriever.returnData(data);
+				count++;
 			}
 		}
-		// uses PopulationDataRetriever interface to retrieve the correct list for the given zip code
-		valuesToAverage = dataRetriever.returnData(data);
-		// calculates the average of the list of values
-		for (Double value : valuesToAverage) {
-			totalOfValues += value;
-			count += 1;
-		}
+//		int count = 0;
+//		// iterate over list of PopulationData objects to find data corresponding to zip code
+//		for (PropertiesData entry : listOfData) {
+//			if (entry.getZipcode() == zipCode) {
+//				data = entry;
+//			}
+//		}
+//		// uses PopulationDataRetriever interface to retrieve the correct list for the given zip code
+//		valuesToAverage = dataRetriever.returnData(data);
+//		// calculates the average of the list of values
+//		for (Double value : valuesToAverage) {
+//			totalOfValues += value;
+//			count += 1;
+//		}
 		double average = totalOfValues / count;
 		// returns the value cast as an integer and truncated
 		return (int) average;
