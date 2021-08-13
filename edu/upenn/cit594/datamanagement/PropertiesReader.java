@@ -103,11 +103,16 @@ public class PropertiesReader implements PropertiesDataReader {
                             }
                     }
                 }
-                zipCodeAsString = record.get(zipIndex).substring(0, 4);
-                zipCode = Integer.parseInt(zipCodeAsString);
-                marketValue = Double.parseDouble(record.get(marketValueIndex));
-                livableArea = Double.parseDouble(record.get(livableAreaIndex));
-                listOfData.add(new PropertiesData(zipCode, marketValue, livableArea));
+                try {
+                    zipCodeAsString = record.get(zipIndex).substring(0, 4);
+                    zipCode = Integer.parseInt(zipCodeAsString);
+                    marketValue = Double.parseDouble(record.get(marketValueIndex));
+                    livableArea = Double.parseDouble(record.get(livableAreaIndex));
+                    listOfData.add(new PropertiesData(zipCode, marketValue, livableArea));
+                } catch (NumberFormatException e) {
+                    continue;
+                }
+
 
                 line = file.readLine();
             }
