@@ -110,5 +110,37 @@ public class Processor {
 		
 		return map;
 	}
+
+	/**
+	 * From a list of PopulationData objects, calculates the average of the list of doubles specified by the dataRetriever parameter
+	 * Implements the Strategy Pattern
+	 * @param listOfData list of PopulationData objects
+	 * @param zipCode for which the average value is calculated
+	 * @param dataRetriever specifies what to find the average of (market value or living area)
+	 * @return average of the specified list of data, truncated as an Integer
+	 */
+	public static Integer getAverageValue(List<PopulationData> listOfData, int zipCode, PopulationDataRetriever dataRetriever) {
+		// initialize variables
+		double totalOfValues = 0.0;
+		int count = 0;
+		PopulationData data = null;
+		List<Double> valuesToAverage;
+		// iterate over list of PopulationData objects to find data corresponding to zip code
+		for (PopulationData entry : listOfData) {
+			if (entry.getZipcode() == zipCode) {
+				data = entry;
+			}
+		}
+		// uses PopulationDataRetriever interface to retrieve the correct list for the given zip code
+		valuesToAverage = dataRetriever.returnData(data);
+		// calculates the average of the list of values
+		for (Double value : valuesToAverage) {
+			totalOfValues += value;
+			count += 1;
+		}
+		double average = totalOfValues / count;
+		// returns the value cast as an integer and truncated
+		return (int) average;
+	}
 	
 }
