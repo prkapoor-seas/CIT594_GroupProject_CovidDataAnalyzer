@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.CovidData;
 	
 public class CSVReaderCovidData implements CovidDataReader{
 	
 	protected String filename;
+
+	protected Logger logger = Logger.getInstance();
 	
 	public CSVReaderCovidData(String filename) {
 		this.filename = filename;
@@ -21,6 +24,8 @@ public class CSVReaderCovidData implements CovidDataReader{
 		List<CovidData> list = new ArrayList<CovidData>();
 		
 		Scanner in = new Scanner(new File(this.filename));
+		logger.logString(filename);
+
 		int line = 0;
 		int timestampIndex = -1;
 		int zipIndex = -1;
