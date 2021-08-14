@@ -74,7 +74,7 @@ public class CommandUserInterface {
 		String vaccine = "";
 		while(!vaccine.equals("partial") | !vaccine.equals("full")) {
 			System.out.println("Enter \"partial\" for partial vaccinations or \"full\" for full vaccinations");
-			System.out.print("> ");
+			System.out.println("> ");
 			vaccine = in.next().trim();
 			//logger.logString(vaccine);
 			if(vaccine.equals("partial")) {
@@ -105,7 +105,7 @@ public class CommandUserInterface {
 	
 	protected void getAvgMktValue() {
 		System.out.println("Please enter a zip code below");
-		System.out.print("> ");
+		System.out.println("> ");
 		int zip = in.nextInt();
 		logger.logString(String.valueOf(zip));
 		System.out.println("BEGIN OUTPUT");
@@ -115,7 +115,7 @@ public class CommandUserInterface {
 	
 	protected void getAvgLivArea() {
 		System.out.println("Please enter a zip code below");
-		System.out.print("> ");
+		System.out.println("> ");
 		int zip = in.nextInt();
 		logger.logString(String.valueOf(zip));
 		System.out.println("BEGIN OUTPUT");
@@ -125,7 +125,7 @@ public class CommandUserInterface {
 	
 	protected void getResMktValPerCapita() {
 		System.out.println("Please enter a zip code below");
-		System.out.print("> ");
+		System.out.println("> ");
 		int zip = in.nextInt();
 		logger.logString(String.valueOf(zip));
 		System.out.println("BEGIN OUTPUT");
