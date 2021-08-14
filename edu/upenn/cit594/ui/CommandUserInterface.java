@@ -40,6 +40,18 @@ public class CommandUserInterface {
 			else if(ch == 2) {
 				getVaccinationsPerCapita();
 			}
+			else if(ch == 3) {
+				getAvgMktValue();
+			}
+			else if(ch == 4) {
+				getAvgLivArea();
+			}
+			else if(ch == 5) {
+				getResMktValPerCapita();
+			}
+			else if(ch == 6) {
+				
+			}
 			else {
 				System.out.println("Error: Wrong choice");
 				break;
@@ -83,6 +95,32 @@ public class CommandUserInterface {
 		}
 	}
 	
+	protected void getAvgMktValue() {
+		System.out.println("Please enter a zip code below");
+		System.out.print("> ");
+		int zip = in.nextInt();
+		System.out.println("BEGIN OUTPUT");
+		System.out.println(this.processor.getAverageMktValue(zip));
+		System.out.println("END OUTPUT");
+	}
+	
+	protected void getAvgLivArea() {
+		System.out.println("Please enter a zip code below");
+		System.out.print("> ");
+		int zip = in.nextInt();
+		System.out.println("BEGIN OUTPUT");
+		System.out.println(this.processor.getAverageLivArea(zip));
+		System.out.println("END OUTPUT");
+	}
+	
+	protected void getResMktValPerCapita() {
+		System.out.println("Please enter a zip code below");
+		System.out.print("> ");
+		int zip = in.nextInt();
+		System.out.println("BEGIN OUTPUT");
+		System.out.println(this.processor.getAverageLivArea(zip));
+		System.out.println("END OUTPUT");
+	}
 	
 
 }

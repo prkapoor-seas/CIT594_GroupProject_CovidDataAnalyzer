@@ -142,6 +142,10 @@ public class Processor {
 			}
 		}
 		
+		if(total == 0 | count == 0) {
+			return 0;
+		}
+		
 		double average = total / count;
 		
 		int ret = 0;
