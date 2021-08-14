@@ -1,5 +1,6 @@
 package edu.upenn.cit594.processor;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -23,6 +24,8 @@ public class Processor {
 	private static int totalPopulation = 0;
 	private static TreeMap<Integer, Double> fullMap = new TreeMap<Integer, Double>();
 	private static TreeMap<Integer, Double> partialMap = new TreeMap<Integer, Double>();
+	private static HashMap<Integer, Integer> avgMktValMap = new HashMap<Integer, Integer>();
+	private static HashMap<Integer, Integer> avgLivMap = new HashMap<Integer, Integer>();
 
 	
 	
@@ -34,6 +37,7 @@ public class Processor {
 		this.propertiesData = propertiesReader.getAllRows();
 	}
 	
+	// This method returns the answer to 1
 	public int getTotalPopulationAllZips() {
 		
 		if(totalPopulation != 0) {
@@ -51,7 +55,7 @@ public class Processor {
 	}
 	
 	
-	
+	// This method returns the answer to 2a
 	public TreeMap<Integer, Double> getFullyVaccinatedPerCapita(){
 		
 		if(fullMap != null) {
@@ -84,6 +88,7 @@ public class Processor {
 		return map;
 	}
 	
+	// This method returns the answer to 2a
 	public TreeMap<Integer, Double> getPartiallyVaccinatedPerCapita(){
 		
 		if(partialMap != null) {
@@ -117,32 +122,64 @@ public class Processor {
 		return map;
 	}
 
-	/**
-	 * From a list of PopulationData objects, calculates the average of the list of doubles specified by the dataRetriever parameter
-	 * Implements the Strategy Pattern
-	 * @param listOfData list of PopulationData objects
-	 * @param zipCode zip code to calculate average for
-	 * @param dataRetriever specifies what to find the average of (market value or living area)
-	 * @return average of the specified list of data, truncated as an Integer
-	 */
-	public static Integer getAverageValue(List<PropertiesData> listOfData, int zipCode, PopulationDataRetriever dataRetriever) {
+	// Common code using selector (strategy method) for 3 and 4
+	public int getAverage(int zip, PropertiesSelector selector) {
 		
-		// initialize variables
-		double totalOfValues = 0.0;
-		int count = 0;
+		double total = 0.0;
+		double count = 0;
 		
-		// iterate over list of PropertiesData objects to find data corresponding to zip code
-		for (PropertiesData data : listOfData) {
-			if (data.getZipcode() == zipCode) {
-				totalOfValues += dataRetriever.returnData(data);
-				count++;
+		
+		for (PropertiesData data : propertiesData) {
+			if (data.getZipcode() == zip) {
+				if(selector.getField(data) != null) {
+					total += selector.getField(data);
+					count++;
+				}
 			}
 		}
-
-		double average = totalOfValues / count;
 		
-		// returns the value cast as an integer and truncated
-		return (int) average;
+		double average = total / count;
+		int ret = (int) Math.floor(average);
+		
+		return ret;
+		
 	}
 	
+	// This method returns the answer to 3
+	public int getAverageMktValue(int zip) {
+		
+		if(avgMktValMap != null) {
+			for(int key: avgMktValMap.keySet()) {
+				if(key == zip) {
+					return avgMktValMap.get(key);
+				}
+			}
+		}
+		
+		int ret = getAverage(zip, new ValueSelector());
+		avgMktValMap.put(zip, ret);
+		
+		return ret;
+		
+	}
+	
+	// This method returns the answer to 4
+	public int getAverageLivArea(int zip) {
+		
+		if(avgLivMap != null) {
+			for(int key: avgLivMap.keySet()) {
+				if(key == zip) {
+					return avgLivMap.get(key);
+				}
+			}
+		}
+		
+		int ret = getAverage(zip, new AreaSelector());
+		avgLivMap.put(zip, ret);
+		
+		return ret;
+		
+	}
+	
+
 }

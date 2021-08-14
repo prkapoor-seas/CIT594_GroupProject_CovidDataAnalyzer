@@ -64,7 +64,6 @@ public class CSVReaderCovidData implements CovidDataReader{
 					
 				}
 				
-				// check with TA
 				if(zipcode != 0 & timeStamp.isBlank()) {
 					CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
 					list.add(data);

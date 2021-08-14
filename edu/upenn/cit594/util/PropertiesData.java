@@ -3,10 +3,10 @@ package edu.upenn.cit594.util;
 public class PropertiesData {
 
 	private final int zipcode;
-	private final double  marketvalue;
-	private final double totalLivableArea;
+	private final Double  marketvalue;
+	private final Double totalLivableArea;
 	
-	public PropertiesData(int zipcode, double marketvalue, double totalLivableArea){
+	public PropertiesData(int zipcode, Double marketvalue, Double totalLivableArea){
 		this.zipcode = zipcode;
 		this.marketvalue = marketvalue;
 		this.totalLivableArea = totalLivableArea;
@@ -16,11 +16,11 @@ public class PropertiesData {
 		return zipcode;
 	}
 
-	public double getTotalLivableArea() {
+	public Double getTotalLivableArea() {
 		return totalLivableArea;
 	}
 
-	public double getMarketValue() {
+	public Double getMarketValue() {
 		return marketvalue;
 	}
 	
