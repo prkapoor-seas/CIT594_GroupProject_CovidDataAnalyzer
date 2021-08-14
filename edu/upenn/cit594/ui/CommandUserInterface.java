@@ -69,30 +69,28 @@ public class CommandUserInterface {
 	}
 	
 	protected void getVaccinationsPerCapita() {
-		String vaccine = "";
-		while(!vaccine.equals("partial") | !vaccine.equals("full")) {
-			System.out.println("Enter partial for partial vaccinations or full for full vaccinations");
-			System.out.print("> ");
-			vaccine = in.nextLine().trim();
-			if(vaccine.equals("partial")) {
-				System.out.println("BEGIN OUTPUT");
-				TreeMap<Integer, Double> map = this.processor.getPartiallyVaccinatedPerCapita();
-				for(int key: map.keySet()) {
-					System.out.print(key + " " + String.format("%.4f", map.get(key)));
-					
-				}
-				System.out.println("END OUTPUT");
+		
+		System.out.println("Enter partial for partial vaccinations or full for full vaccinations");
+		System.out.print("> ");
+		String vaccine = in.nextLine().trim();
+		if(vaccine.equals("partial")) {
+			System.out.println("BEGIN OUTPUT");
+			TreeMap<Integer, Double> map = this.processor.getPartiallyVaccinatedPerCapita();
+			for(int key: map.keySet()) {
+				System.out.println(key + " " + String.format("%.4f", map.get(key)));
 			}
-			else if(vaccine.equals("full")) {
-				System.out.println("BEGIN OUTPUT");
-				TreeMap<Integer, Double> map = this.processor.getFullyVaccinatedPerCapita();
-				for(int key: map.keySet()) {
-					System.out.print(key + " " + String.format("%.4f", map.get(key)));
-					
-				}
-				System.out.println("END OUTPUT");
-			}
+			System.out.println("END OUTPUT");
 		}
+		else if(vaccine.equals("full")) {
+			System.out.println("BEGIN OUTPUT");
+			TreeMap<Integer, Double> map = this.processor.getFullyVaccinatedPerCapita();
+			for(int key: map.keySet()) {
+				System.out.println(key + " " + String.format("%.4f", map.get(key)));
+				
+			}
+			System.out.println("END OUTPUT");
+		}
+		
 	}
 	
 	protected void getAvgMktValue() {

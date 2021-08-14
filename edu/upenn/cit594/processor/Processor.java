@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
+import edu.upenn.cit594.datamanagement.PropertiesDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesReader;
 import edu.upenn.cit594.util.CovidData;
 import edu.upenn.cit594.util.PopulationData;
@@ -16,7 +17,7 @@ public class Processor {
 	protected CovidDataReader covidReader;
 	protected List<CovidData> covidData;
 	protected PopulationDataReader popReader;
-	protected PropertiesReader propertiesReader;
+	protected PropertiesDataReader propertiesReader;
 	protected List<PopulationData> popData;
 	protected List<PropertiesData> propertiesData;
 	
@@ -29,12 +30,13 @@ public class Processor {
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
 	
 	
-	public Processor(CovidDataReader covidReader, PopulationDataReader popReader) throws Exception{
+	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propReader) throws Exception{
 		this.covidReader = covidReader;
 		this.covidData = covidReader.getAllRows();
 		this.popReader = popReader;
 		this.popData = popReader.getAllRows();
-		this.propertiesData = propertiesReader.getAllRows();
+		this.propertiesReader = propReader;
+		this.propertiesData = propReader.getAllRows();
 	}
 	
 	// This method returns the answer to 1
@@ -58,7 +60,7 @@ public class Processor {
 	// This method returns the answer to 2a
 	public TreeMap<Integer, Double> getFullyVaccinatedPerCapita(){
 		
-		if(fullMap != null) {
+		if(!fullMap.isEmpty()) {
 			return fullMap;
 		}
 		
@@ -94,7 +96,7 @@ public class Processor {
 	// This method returns the answer to 2b
 	public TreeMap<Integer, Double> getPartiallyVaccinatedPerCapita(){
 		
-		if(partialMap != null) {
+		if(!partialMap.isEmpty()) {
 			return partialMap;
 		}
 		

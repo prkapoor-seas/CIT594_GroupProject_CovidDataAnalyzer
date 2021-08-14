@@ -7,6 +7,8 @@ import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.JSONReaderCovidData;
 import edu.upenn.cit594.datamanagement.PopReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
+import edu.upenn.cit594.datamanagement.PropertiesDataReader;
+import edu.upenn.cit594.datamanagement.PropertiesReader;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.ui.CommandUserInterface;
@@ -35,21 +37,22 @@ public class Main {
 		
 		CovidDataReader covidReader = null;
 		
-		if(covidDataFilename.substring(covidDataFilename.length()-4).toLowerCase().equals(".txt")) {
+		if(covidDataFilename.substring(covidDataFilename.length()-4).toLowerCase().equals(".csv")) {
 			covidReader = new CSVReaderCovidData(covidDataFilename);
 		}
 		else if(covidDataFilename.substring(covidDataFilename.length()-5).toLowerCase().equals(".json")) {
 			covidReader = new JSONReaderCovidData(covidDataFilename);
 		}
 		else {
-			System.out.println("Error: Tweets file should have .txt or .json extension");
+			System.out.println("Error: Covid data file should have .csv or .json extension");
 			return;
 		}
 		
 		PopulationDataReader popReader = new PopReader(popDataFilename);
+		PropertiesDataReader propReader = new PropertiesReader(propertiesDataFilename);
 		
 		try {
-			Processor processor = new Processor(covidReader, popReader);
+			Processor processor = new Processor(covidReader, popReader,propReader );
 			CommandUserInterface ui = new CommandUserInterface(processor);
 			ui.start();
 		} catch (Exception e) {
