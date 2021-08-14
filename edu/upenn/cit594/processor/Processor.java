@@ -16,7 +16,7 @@ public class Processor {
 	protected CovidDataReader covidReader;
 	protected List<CovidData> covidData;
 	protected PopulationDataReader popReader;
-	protected PropertiesReader propertiesReader;
+	protected PropertiesDataReader propertiesDataReader;
 	protected List<PopulationData> popData;
 	protected List<PropertiesData> propertiesData;
 
@@ -36,6 +36,7 @@ public class Processor {
 		this.covidData = covidReader.getAllRows();
 		this.popReader = popReader;
 		this.popData = popReader.getAllRows();
+		this.propertiesDataReader = propertiesDataReader;
 		this.propertiesData = propertiesDataReader.getAllRows();
 	}
 	
@@ -60,7 +61,7 @@ public class Processor {
 	// This method returns the answer to 2a
 	public TreeMap<Integer, Double> getFullyVaccinatedPerCapita(){
 		
-		if(fullMap != null) {
+		if(fullMap.size() != 0) {
 			return fullMap;
 		}
 		
@@ -96,7 +97,7 @@ public class Processor {
 	// This method returns the answer to 2b
 	public TreeMap<Integer, Double> getPartiallyVaccinatedPerCapita(){
 		
-		if(partialMap != null) {
+		if(partialMap.size() != 0) {
 			return partialMap;
 		}
 		

@@ -1,5 +1,6 @@
 package edu.upenn.cit594.ui;
 
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -20,10 +21,10 @@ public class CommandUserInterface {
 	public void start() {
 		
 		while(true) {
-			System.out.println("Enter 0 to exit, 1 to get total population across all zips, 2 to get total (partial/full) vaccinations per capita by zip");
+			System.out.println("Enter 0 to exit \nEnter 1 to get total population across all zips \nEnter 2 to get total (partial/full) vaccinations per capita by zip \nEnter 3 to get average market value by zip \nEnter 4 to get average livable area by zip \nEnter 5 to get total residential market value per capita \nEnter 6 to get ###to fill in later");
 			System.out.print("> ");
-			String choice = in.nextLine();
-			logger.logString(choice);
+			String choice = in.next();
+			logger.logString(String.valueOf(choice));
 			int ch;
 			try {
 				ch = Integer.parseInt(choice);
@@ -52,15 +53,13 @@ public class CommandUserInterface {
 				getResMktValPerCapita();
 			}
 			else if(ch == 6) {
-				//need to complete
+				getMaxVaccinePerCapita();
 			}
 			else {
 				System.out.println("Error: Wrong choice");
 				break;
 			}
 		}
-		
-		
 	}
 	
 	
@@ -73,26 +72,33 @@ public class CommandUserInterface {
 	protected void getVaccinationsPerCapita() {
 		String vaccine = "";
 		while(!vaccine.equals("partial") | !vaccine.equals("full")) {
-			System.out.println("Enter partial for partial vaccinations or full for full vaccinations");
+			System.out.println("Enter \"partial\" for partial vaccinations or \"full\" for full vaccinations");
 			System.out.print("> ");
-			vaccine = in.nextLine().trim();
+			vaccine = in.next().trim();
 			if(vaccine.equals("partial")) {
 				System.out.println("BEGIN OUTPUT");
 				TreeMap<Integer, Double> map = this.processor.getPartiallyVaccinatedPerCapita();
-				for(int key: map.keySet()) {
-					System.out.print(key + " " + String.format("%.4f", map.get(key)));
-					
+//				for(int key: map.keySet()) {
+//					System.out.print(key + " " + String.format("%.4f", map.get(key)));
+				for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+					System.out.println(entry.getKey() +
+							" " + String.format("%.4f", entry.getValue()));
+
 				}
 				System.out.println("END OUTPUT");
+				break;
 			}
 			else if(vaccine.equals("full")) {
 				System.out.println("BEGIN OUTPUT");
 				TreeMap<Integer, Double> map = this.processor.getFullyVaccinatedPerCapita();
-				for(int key: map.keySet()) {
-					System.out.print(key + " " + String.format("%.4f", map.get(key)));
-					
+//				for(int key: map.keySet()) {
+//					System.out.print(key + " " + String.format("%.4f", map.get(key)));
+				for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+					System.out.println(entry.getKey() +
+							" " + String.format("%.4f", entry.getValue()));
 				}
 				System.out.println("END OUTPUT");
+				break;
 			}
 		}
 	}
@@ -124,6 +130,12 @@ public class CommandUserInterface {
 		logger.logString(String.valueOf(zip));
 		System.out.println("BEGIN OUTPUT");
 		System.out.println(this.processor.getAverageLivArea(zip));
+		System.out.println("END OUTPUT");
+	}
+
+	protected void getMaxVaccinePerCapita() {
+		System.out.println("BEGIN OUTPUT");
+		System.out.println(this.processor.getZipWithHighestFullVaccinationPerCapita());
 		System.out.println("END OUTPUT");
 	}
 	
