@@ -26,7 +26,7 @@ public class Processor {
 	private static TreeMap<Integer, Double> partialMap = new TreeMap<Integer, Double>();
 	private static HashMap<Integer, Integer> avgMktValMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> avgLivMap = new HashMap<Integer, Integer>();
-
+	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
 	
 	
 	public Processor(CovidDataReader covidReader, PopulationDataReader popReader) throws Exception{
@@ -67,11 +67,14 @@ public class Processor {
 		for(int i = 0; i < this.popData.size(); i++) {
 			PopulationData data = this.popData.get(i);
 			int zip = data.getZipcode();
-			double population = (double) data.getPopulation();
+			double population = data.getPopulation();
 			double fullyVaccinated = 0;
+			
 			for(int j =0; j < this.covidData.size(); j++) {
 				if(this.covidData.get(j).getZipcode() == zip ) {
-					fullyVaccinated += this.covidData.get(j).getFullyVaccinated();
+					if(this.covidData.get(j).getFullyVaccinated() != 0) {
+						fullyVaccinated = this.covidData.get(j).getFullyVaccinated();
+					}
 				}
 			}
 			
@@ -88,7 +91,7 @@ public class Processor {
 		return map;
 	}
 	
-	// This method returns the answer to 2a
+	// This method returns the answer to 2b
 	public TreeMap<Integer, Double> getPartiallyVaccinatedPerCapita(){
 		
 		if(partialMap != null) {
@@ -100,11 +103,13 @@ public class Processor {
 		for(int i = 0; i < this.popData.size(); i++) {
 			PopulationData data = this.popData.get(i);
 			int zip = data.getZipcode();
-			double population = (double) data.getPopulation();
+			double population = data.getPopulation();
 			double partiallyVaccinated = 0;
 			for(int j =0; j < this.covidData.size(); j++) {
 				if(this.covidData.get(j).getZipcode() == zip ) {
-					partiallyVaccinated += this.covidData.get(j).getPartiallyVaccinated();
+					if(this.covidData.get(j).getPartiallyVaccinated() != 0) {
+						partiallyVaccinated = this.covidData.get(j).getPartiallyVaccinated();
+					}
 				}
 			}
 
@@ -114,7 +119,6 @@ public class Processor {
 				double ret = Double.parseDouble(value);
 				map.put(zip, ret);
 			}
-			
 		}
 		
 		partialMap = map;
@@ -139,7 +143,14 @@ public class Processor {
 		}
 		
 		double average = total / count;
-		int ret = (int) Math.floor(average);
+		
+		int ret = 0;
+		if(average > 0) {
+			ret = (int) Math.floor(average);
+		}
+		else {
+			ret = (int) Math.ceil(average);
+		}
 		
 		return ret;
 		
@@ -180,6 +191,57 @@ public class Processor {
 		return ret;
 		
 	}
-	
 
+	// This method returns the answer to 5
+	public int getResMktValPerCapita(int zip) {
+		
+		if(MktValPerCapMap != null) {
+			for(int key: MktValPerCapMap.keySet()) {
+				if(key == zip) {
+					return MktValPerCapMap.get(key);
+				}
+			}
+		}
+		
+		double population = 0;
+		for(int i = 0; i < this.popData.size(); i++) {
+			if(this.popData.get(i).getZipcode() == zip) {
+				population = this.popData.get(i).getPopulation();
+			}
+		}
+		
+		if(population == 0) {
+			MktValPerCapMap.put(zip, 0);
+			return 0;
+		}
+		
+		double total = 0;
+		for (PropertiesData data : propertiesData) {
+			if (data.getZipcode() == zip) {
+				if(data.getMarketValue() != null) {
+					total += data.getMarketValue();
+				}
+			}
+		}
+		
+		if(total == 0) {
+			MktValPerCapMap.put(zip, 0);
+			return 0;
+		}
+		
+		double avg = total/population;
+		
+		int ret = 0;
+		if(avg > 0) {
+			ret = (int) Math.floor(avg);
+		}
+		else {
+			ret = (int) Math.ceil(avg);
+		}
+		
+		MktValPerCapMap.put(zip, ret);
+		
+		return ret;
+		
+	}
 }

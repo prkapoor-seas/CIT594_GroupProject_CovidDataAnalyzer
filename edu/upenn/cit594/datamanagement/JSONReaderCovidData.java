@@ -46,8 +46,10 @@ String filename;
         		
         	}
         	
-        	CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
-        	list.add(data);
+        	if(zipcode != 0 & !timeStamp.isBlank()) {
+        		CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
+            	list.add(data);
+        	}
         }
         
 		return list;
