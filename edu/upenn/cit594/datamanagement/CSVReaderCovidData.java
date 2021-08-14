@@ -49,7 +49,7 @@ public class CSVReaderCovidData implements CovidDataReader{
 				}
 			}
 			else {
-				//System.out.println(txt.length);
+				
 				String timeStamp = txt[timestampIndex];
 				int zipcode = 0;
 				int partiallyVaccinated = 0;

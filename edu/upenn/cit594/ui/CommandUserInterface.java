@@ -50,7 +50,7 @@ public class CommandUserInterface {
 				getResMktValPerCapita();
 			}
 			else if(ch == 6) {
-				
+				//need to complete
 			}
 			else {
 				System.out.println("Error: Wrong choice");
