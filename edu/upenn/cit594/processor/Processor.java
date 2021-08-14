@@ -129,6 +129,10 @@ public class Processor {
 	// Common code using selector (strategy method) for 3 and 4
 	public int getAverage(int zip, PropertiesSelector selector) {
 		
+		if(Integer.toString(zip).length() != 5) {
+			return 0;
+		}
+		
 		double total = 0.0;
 		double count = 0;
 		
@@ -198,6 +202,10 @@ public class Processor {
 
 	// This method returns the answer to 5
 	public int getResMktValPerCapita(int zip) {
+		
+		if(Integer.toString(zip).length() != 5) {
+			return 0;
+		}
 		
 		if(MktValPerCapMap != null) {
 			for(int key: MktValPerCapMap.keySet()) {
