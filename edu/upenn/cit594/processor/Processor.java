@@ -23,8 +23,7 @@ public class Processor {
 	private static int totalPopulation = 0;
 	private static TreeMap<Integer, Double> fullMap = new TreeMap<Integer, Double>();
 	private static TreeMap<Integer, Double> partialMap = new TreeMap<Integer, Double>();
-	private static int averageMarketValue = 0;
-	private static int averageLivableArea = 0;
+
 	
 	
 	public Processor(CovidDataReader covidReader, PopulationDataReader popReader) throws Exception{
@@ -127,9 +126,11 @@ public class Processor {
 	 * @return average of the specified list of data, truncated as an Integer
 	 */
 	public static Integer getAverageValue(List<PropertiesData> listOfData, int zipCode, PopulationDataRetriever dataRetriever) {
+		
 		// initialize variables
 		double totalOfValues = 0.0;
 		int count = 0;
+		
 		// iterate over list of PropertiesData objects to find data corresponding to zip code
 		for (PropertiesData data : listOfData) {
 			if (data.getZipcode() == zipCode) {
@@ -137,21 +138,9 @@ public class Processor {
 				count++;
 			}
 		}
-//		int count = 0;
-//		// iterate over list of PopulationData objects to find data corresponding to zip code
-//		for (PropertiesData entry : listOfData) {
-//			if (entry.getZipcode() == zipCode) {
-//				data = entry;
-//			}
-//		}
-//		// uses PopulationDataRetriever interface to retrieve the correct list for the given zip code
-//		valuesToAverage = dataRetriever.returnData(data);
-//		// calculates the average of the list of values
-//		for (Double value : valuesToAverage) {
-//			totalOfValues += value;
-//			count += 1;
-//		}
+
 		double average = totalOfValues / count;
+		
 		// returns the value cast as an integer and truncated
 		return (int) average;
 	}

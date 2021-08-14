@@ -16,17 +16,12 @@ public class PropertiesData {
 		return zipcode;
 	}
 
-	public double getMarketvalue() {
-		return marketvalue;
-	}
-
 	public double getTotalLivableArea() {
 		return totalLivableArea;
 	}
 
 	public double getMarketValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return marketvalue;
 	}
 	
 }

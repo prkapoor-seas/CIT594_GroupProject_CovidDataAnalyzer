@@ -63,10 +63,13 @@ public class CSVReaderCovidData implements CovidDataReader{
 				catch(NumberFormatException e) {
 					
 				}
-				 
 				
-				CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
-				list.add(data);
+				// check with TA
+				if(zipcode != 0 & timeStamp.isBlank()) {
+					CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
+					list.add(data);
+				}
+				 
 			}
 			line++;
 		}
