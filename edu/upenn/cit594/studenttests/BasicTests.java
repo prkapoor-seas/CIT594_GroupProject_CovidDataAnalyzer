@@ -126,9 +126,9 @@ public class BasicTests {
 	public void testTwice() throws Exception {
 		makeSmallProperties("properties.csv", "small_properties.csv", 100);
 
-		String result1 = runMain(new String[] { "covid_data.json", "small_properties.csv", "population.txt", "small_test1.log" }, "2\n0\n");
+		String result1 = runMain(new String[] { "covid_data.json", "small_properties.csv", "population.txt", "small_test1.log" }, "2\nfull\n0\n");
 		//System.out.println(result1);
-		String result2 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "2\n0\n");
+		String result2 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "2\nfull\n0\n");
 
 		Set<String> sResult1 = new HashSet<>(extractResults(result1));
 		Set<String> sResult2 = new HashSet<>(extractResults(result2));
