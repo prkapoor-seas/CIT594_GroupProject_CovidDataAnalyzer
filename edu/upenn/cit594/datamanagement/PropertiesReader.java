@@ -1,5 +1,6 @@
 package edu.upenn.cit594.datamanagement;
 
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.PropertiesData;
 
 import java.io.*;
@@ -11,6 +12,7 @@ public class PropertiesReader implements PropertiesDataReader {
 
 
     protected String filename;
+    protected Logger logger = Logger.getInstance();
 
     public PropertiesReader(String name) {
         filename = name;
@@ -20,6 +22,7 @@ public class PropertiesReader implements PropertiesDataReader {
         List<PropertiesData> list = new LinkedList<PropertiesData>();
 
         File inputFile = new File(filename);
+        logger.logString(filename);
         BufferedReader file = new BufferedReader(new FileReader(inputFile));
 
         String line = file.readLine();

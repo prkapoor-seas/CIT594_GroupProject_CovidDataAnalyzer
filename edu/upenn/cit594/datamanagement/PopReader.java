@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.PopulationData;
 
 public class PopReader implements PopulationDataReader{
 	
 	protected String filename;
+
+	protected Logger logger = Logger.getInstance();
 	
 	public PopReader(String filename) {
 		this.filename = filename;
@@ -20,6 +23,8 @@ public class PopReader implements PopulationDataReader{
 		List<PopulationData> list = new ArrayList<PopulationData>();
 		
 		Scanner in = new Scanner(new File(this.filename));
+
+		logger.logString(filename);
 		
 		while(in.hasNextLine()) {
 			String text = in.nextLine();

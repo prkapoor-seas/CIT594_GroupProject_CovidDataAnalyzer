@@ -1,13 +1,12 @@
 package edu.upenn.cit594.processor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesReader;
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.CovidData;
 import edu.upenn.cit594.util.PopulationData;
 import edu.upenn.cit594.util.PropertiesData;
@@ -17,9 +16,11 @@ public class Processor {
 	protected CovidDataReader covidReader;
 	protected List<CovidData> covidData;
 	protected PopulationDataReader popReader;
-	protected PropertiesDataReader propertiesReader;
+	protected PropertiesDataReader propertiesDataReader;
 	protected List<PopulationData> popData;
 	protected List<PropertiesData> propertiesData;
+
+	protected Logger logger = Logger.getInstance(); // check on this
 	
 	// memoization
 	private static int totalPopulation = 0;
@@ -28,15 +29,17 @@ public class Processor {
 	private static HashMap<Integer, Integer> avgMktValMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> avgLivMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
+	private static int maxZip = 0;
 	
-	
-	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propReader) throws Exception{
+
+	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propertiesDataReader) throws Exception{
 		this.covidReader = covidReader;
 		this.covidData = covidReader.getAllRows();
 		this.popReader = popReader;
 		this.popData = popReader.getAllRows();
-		this.propertiesReader = propReader;
-		this.propertiesData = propReader.getAllRows();
+		this.propertiesDataReader = propertiesDataReader;
+		this.propertiesData = propertiesDataReader.getAllRows();
+
 	}
 	
 	// This method returns the answer to 1
@@ -96,6 +99,7 @@ public class Processor {
 	// This method returns the answer to 2b
 	public TreeMap<Integer, Double> getPartiallyVaccinatedPerCapita(){
 		
+
 		if(!partialMap.isEmpty()) {
 			return partialMap;
 		}
@@ -257,5 +261,25 @@ public class Processor {
 		
 		return ret;
 		
+	}
+	//This method returns the answer to 6
+	public int getZipWithHighestFullVaccinationPerCapita(){
+		
+		if(maxZip != 0) {
+			return maxZip;
+		}
+
+		TreeMap<Integer, Double> map;
+		if (fullMap != null){
+			map = fullMap;
+		}
+		else{
+			map = getFullyVaccinatedPerCapita();
+		}
+
+		//double maxVaccinePerCapita = (Collections.max(map.values()));
+		int zipWithMaxFullVacc = (Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey());
+		maxZip = zipWithMaxFullVacc;
+		return zipWithMaxFullVacc;
 	}
 }

@@ -48,10 +48,20 @@ public class Logger {
    }
    
    
-   public void log(String msg) {
-	   out.println(msg);
+   public void logString(String msg) {
+	   out.println(System.currentTimeMillis() + " " + msg);
 	   out.flush();
    }
-   
+
+   public void logStringArray(String[] msgAsArray) {
+	   // convert array to string
+	   String arrayAsString = "";
+	   for (String item : msgAsArray) {
+	   		arrayAsString += " " + item;
+	   }
+	   out.println(System.currentTimeMillis() + arrayAsString);
+	   out.flush();
+
+   }
 }
 

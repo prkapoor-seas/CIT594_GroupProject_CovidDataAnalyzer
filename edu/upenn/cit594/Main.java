@@ -2,6 +2,7 @@ package edu.upenn.cit594;
 
 import java.io.IOException;
 
+
 import edu.upenn.cit594.datamanagement.CSVReaderCovidData;
 import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.JSONReaderCovidData;
@@ -9,6 +10,7 @@ import edu.upenn.cit594.datamanagement.PopReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesReader;
+
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.ui.CommandUserInterface;
@@ -16,7 +18,7 @@ import edu.upenn.cit594.ui.CommandUserInterface;
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 		if(args.length != 4) {
 			System.out.println("Error in Syntax: covidDataFilename propertiesDataFilename popDataFilename logFilename");
 			return;
@@ -34,7 +36,10 @@ public class Main {
 			System.out.println("Error: Error opening logfile for writing");
 			return;
 		}
-		
+
+		// logs runtime arguments
+		logger.logStringArray(args);
+
 		CovidDataReader covidReader = null;
 		
 		if(covidDataFilename.substring(covidDataFilename.length()-4).toLowerCase().equals(".csv")) {
@@ -49,10 +54,12 @@ public class Main {
 		}
 		
 		PopulationDataReader popReader = new PopReader(popDataFilename);
-		PropertiesDataReader propReader = new PropertiesReader(propertiesDataFilename);
+
+		PropertiesDataReader propertiesDataReader = new PropertiesReader((propertiesDataFilename));
 		
 		try {
-			Processor processor = new Processor(covidReader, popReader,propReader );
+			Processor processor = new Processor(covidReader, popReader, propertiesDataReader);
+
 			CommandUserInterface ui = new CommandUserInterface(processor);
 			ui.start();
 		} catch (Exception e) {

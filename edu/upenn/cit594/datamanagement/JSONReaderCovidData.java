@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upenn.cit594.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,6 +15,8 @@ import edu.upenn.cit594.util.CovidData;
 public class JSONReaderCovidData implements CovidDataReader{
 	
 String filename;
+
+	protected Logger logger = Logger.getInstance();
 	
 	public JSONReaderCovidData(String filename){
 		this.filename = filename;
@@ -24,6 +27,8 @@ String filename;
 		List<CovidData> list = new ArrayList<CovidData>();
 		
 		Object obj = new JSONParser().parse(new FileReader(this.filename));
+
+		logger.logString(filename);
 		
         JSONArray ja = (JSONArray) obj;
         
