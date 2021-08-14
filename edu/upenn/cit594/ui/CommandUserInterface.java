@@ -22,7 +22,7 @@ public class CommandUserInterface {
 		
 		while(true) {
 			System.out.println("Enter 0 to exit \nEnter 1 to get total population across all zips \nEnter 2 to get total (partial/full) vaccinations per capita by zip \nEnter 3 to get average market value by zip \nEnter 4 to get average livable area by zip \nEnter 5 to get total residential market value per capita \nEnter 6 to get ###to fill in later");
-			System.out.print("> ");
+			System.out.println("> ");
 			String choice = in.next();
 			logger.logString(String.valueOf(choice));
 			int ch;
