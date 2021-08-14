@@ -1,8 +1,6 @@
 package edu.upenn.cit594.processor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
@@ -259,5 +257,20 @@ public class Processor {
 		
 		return ret;
 		
+	}
+	//This method returns the answer to 6
+	public int getZipWithHighestFullVaccinationPerCapita(){
+
+		TreeMap<Integer, Double> map;
+		if (fullMap != null){
+			map = fullMap;
+		}
+		else{
+			map = getFullyVaccinatedPerCapita();
+		}
+
+		//double maxVaccinePerCapita = (Collections.max(map.values()));
+		int zipWithMaxFullVacc = (Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey());
+		return zipWithMaxFullVacc;
 	}
 }
