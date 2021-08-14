@@ -3,12 +3,14 @@ package edu.upenn.cit594.ui;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
 
 public class CommandUserInterface {
 	
 	protected Processor processor;
 	protected Scanner in;
+	protected Logger logger = Logger.getInstance();
 	
 	public CommandUserInterface(Processor processor){
 		this.processor = processor;
@@ -21,7 +23,7 @@ public class CommandUserInterface {
 			System.out.println("Enter 0 to exit, 1 to get total population across all zips, 2 to get total (partial/full) vaccinations per capita by zip");
 			System.out.print("> ");
 			String choice = in.nextLine();
-			
+			logger.logString(choice);
 			int ch;
 			try {
 				ch = Integer.parseInt(choice);
@@ -99,6 +101,7 @@ public class CommandUserInterface {
 		System.out.println("Please enter a zip code below");
 		System.out.print("> ");
 		int zip = in.nextInt();
+		logger.logString(String.valueOf(zip));
 		System.out.println("BEGIN OUTPUT");
 		System.out.println(this.processor.getAverageMktValue(zip));
 		System.out.println("END OUTPUT");
@@ -108,6 +111,7 @@ public class CommandUserInterface {
 		System.out.println("Please enter a zip code below");
 		System.out.print("> ");
 		int zip = in.nextInt();
+		logger.logString(String.valueOf(zip));
 		System.out.println("BEGIN OUTPUT");
 		System.out.println(this.processor.getAverageLivArea(zip));
 		System.out.println("END OUTPUT");
@@ -117,6 +121,7 @@ public class CommandUserInterface {
 		System.out.println("Please enter a zip code below");
 		System.out.print("> ");
 		int zip = in.nextInt();
+		logger.logString(String.valueOf(zip));
 		System.out.println("BEGIN OUTPUT");
 		System.out.println(this.processor.getAverageLivArea(zip));
 		System.out.println("END OUTPUT");

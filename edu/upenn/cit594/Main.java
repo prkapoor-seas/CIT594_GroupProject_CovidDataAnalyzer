@@ -14,7 +14,7 @@ import edu.upenn.cit594.ui.CommandUserInterface;
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 		if(args.length != 4) {
 			System.out.println("Error in Syntax: covidDataFilename propertiesDataFilename popDataFilename logFilename");
 			return;
@@ -32,7 +32,10 @@ public class Main {
 			System.out.println("Error: Error opening logfile for writing");
 			return;
 		}
-		
+
+		// logs runtime arguments
+		logger.logStringArray(args);
+
 		CovidDataReader covidReader = null;
 		
 		if(covidDataFilename.substring(covidDataFilename.length()-4).toLowerCase().equals(".txt")) {
