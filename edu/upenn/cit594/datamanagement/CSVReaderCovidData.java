@@ -11,14 +11,12 @@ import edu.upenn.cit594.util.CovidData;
 public class CSVReaderCovidData implements CovidDataReader{
 	
 	protected String filename;
-
 	protected Logger logger = Logger.getInstance();
 	
 	public CSVReaderCovidData(String filename) {
 		this.filename = filename;
 	}
 
-	
 	public List<CovidData> getAllRows() throws Exception {
 		
 		List<CovidData> list = new ArrayList<CovidData>();
@@ -38,7 +36,7 @@ public class CSVReaderCovidData implements CovidDataReader{
 			if(line == 0) {				
 				for(int i = 0; i < txt.length; i++) {
 					String str = txt[i];
-					str = str.substring(1, str.length()-1);
+					
 					if(str.equals("etl_timestamp")) {
 						timestampIndex = i;
 					}
@@ -68,12 +66,12 @@ public class CSVReaderCovidData implements CovidDataReader{
 				catch(NumberFormatException e) {
 					
 				}
+				 
 				
 				if(zipcode != 0 & !timeStamp.isBlank()) {
 					CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
 					list.add(data);
 				}
-				 
 			}
 			line++;
 		}
@@ -83,4 +81,3 @@ public class CSVReaderCovidData implements CovidDataReader{
 	}
 
 }
-

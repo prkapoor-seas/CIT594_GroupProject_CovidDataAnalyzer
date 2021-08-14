@@ -23,7 +23,7 @@ public class Main {
 			System.out.println("Error in Syntax: covidDataFilename propertiesDataFilename popDataFilename logFilename");
 			return;
 		}
-		
+	
 		String covidDataFilename = args[0];
 		String propertiesDataFilename = args[1];
 		String popDataFilename = args[2];
@@ -63,6 +63,8 @@ public class Main {
 			CommandUserInterface ui = new CommandUserInterface(processor);
 			ui.start();
 		} catch (Exception e) {
+			e.getStackTrace();
+			e.printStackTrace();
 			System.out.println("One of the data files cannot be opened");
 			return;
 		}

@@ -100,7 +100,6 @@ public class CommandUserInterface {
 				System.out.println("END OUTPUT");
 				break;
 			}
-			System.out.println("END OUTPUT");
 		}
 		
 	}
