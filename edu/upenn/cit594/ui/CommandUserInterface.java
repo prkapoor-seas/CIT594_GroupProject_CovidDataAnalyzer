@@ -75,6 +75,7 @@ public class CommandUserInterface {
 			System.out.println("Enter \"partial\" for partial vaccinations or \"full\" for full vaccinations");
 			System.out.print("> ");
 			vaccine = in.next().trim();
+			logger.logString(vaccine);
 			if(vaccine.equals("partial")) {
 				System.out.println("BEGIN OUTPUT");
 				TreeMap<Integer, Double> map = this.processor.getPartiallyVaccinatedPerCapita();
