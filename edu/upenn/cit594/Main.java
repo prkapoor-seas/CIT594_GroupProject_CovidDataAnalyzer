@@ -2,14 +2,11 @@ package edu.upenn.cit594;
 
 import java.io.IOException;
 
-import edu.upenn.cit594.datamanagement.CSVReaderCovidData;
-import edu.upenn.cit594.datamanagement.CovidDataReader;
-import edu.upenn.cit594.datamanagement.JSONReaderCovidData;
-import edu.upenn.cit594.datamanagement.PopReader;
-import edu.upenn.cit594.datamanagement.PopulationDataReader;
+import edu.upenn.cit594.datamanagement.*;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.ui.CommandUserInterface;
+import edu.upenn.cit594.util.PropertiesData;
 
 public class Main {
 
@@ -50,9 +47,11 @@ public class Main {
 		}
 		
 		PopulationDataReader popReader = new PopReader(popDataFilename);
+
+		PropertiesDataReader propertiesDataReader = new PropertiesReader((propertiesDataFilename));
 		
 		try {
-			Processor processor = new Processor(covidReader, popReader);
+			Processor processor = new Processor(covidReader, popReader, propertiesDataReader);
 			CommandUserInterface ui = new CommandUserInterface(processor);
 			ui.start();
 		} catch (Exception e) {

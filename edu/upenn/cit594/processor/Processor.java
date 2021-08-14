@@ -6,7 +6,9 @@ import java.util.TreeMap;
 
 import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
+import edu.upenn.cit594.datamanagement.PropertiesDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesReader;
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.CovidData;
 import edu.upenn.cit594.util.PopulationData;
 import edu.upenn.cit594.util.PropertiesData;
@@ -19,6 +21,8 @@ public class Processor {
 	protected PropertiesReader propertiesReader;
 	protected List<PopulationData> popData;
 	protected List<PropertiesData> propertiesData;
+
+	protected Logger logger = Logger.getInstance();
 	
 	// memoization
 	private static int totalPopulation = 0;
@@ -29,12 +33,12 @@ public class Processor {
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
 	
 	
-	public Processor(CovidDataReader covidReader, PopulationDataReader popReader) throws Exception{
+	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propertiesDataReader) throws Exception{
 		this.covidReader = covidReader;
 		this.covidData = covidReader.getAllRows();
 		this.popReader = popReader;
 		this.popData = popReader.getAllRows();
-		this.propertiesData = propertiesReader.getAllRows();
+		this.propertiesData = propertiesDataReader.getAllRows();
 	}
 	
 	// This method returns the answer to 1
