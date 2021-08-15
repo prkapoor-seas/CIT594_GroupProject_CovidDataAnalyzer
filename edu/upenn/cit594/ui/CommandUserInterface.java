@@ -184,7 +184,7 @@ public class CommandUserInterface {
 
 	protected void getMaxVaccinePerCapita() {
 		System.out.println("BEGIN OUTPUT");
-		System.out.println(this.processor.getMinMaxMktVal());
+		System.out.print(this.processor.getMinMaxMktVal());
 		System.out.println("END OUTPUT");
 	}
 	
