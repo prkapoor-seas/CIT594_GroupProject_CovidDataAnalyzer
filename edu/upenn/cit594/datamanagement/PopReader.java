@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,7 +25,7 @@ public class PopReader implements PopulationDataReader{
 
 		 File inputFile = new File(filename);
 		 
-		 long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis();
 		String out = Long.toString(time);
 		out += " " + filename;
 		logger.logString(out); 
@@ -54,5 +55,48 @@ public class PopReader implements PopulationDataReader{
 		
 		return list;
 	}
+	
+	public HashMap<Integer, Integer> getMap() throws Exception{
+		
+		 File inputFile = new File(filename);
+		 
+		long time = System.currentTimeMillis();
+		String out = Long.toString(time);
+		out += " " + filename;
+		logger.logString(out); 
+	     
+	    BufferedReader file = new BufferedReader(new FileReader(inputFile));
+		
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		
+		String line = file.readLine();
+		
+		 while(line != null) {
+			 String txt[]  = line.split(" ",-1);
+			 
+			 try {
+				Integer zipcode = Integer.parseInt(txt[0]);
+				Integer population = Integer.parseInt(txt[1]);
+				if(map.containsKey(zipcode)) {
+					throw new Exception();
+				}
+				else {
+					map.put(zipcode, population);
+				}
+				
+			}
+			catch(NumberFormatException e) {
+				
+			}
+			
+			line = file.readLine();
+		 }
+		
+		
+		return map;
+		
+	}
+	
+	
 
 }

@@ -89,22 +89,13 @@ public class CommandUserInterface {
 			vaccine = in.nextLine();
 			if(vaccine.equals("partial")) {
 				System.out.println("BEGIN OUTPUT");
-				TreeMap<Integer, Double> map = this.processor.getPartiallyVaccinatedPerCapita();
-				for (Map.Entry<Integer, Double> entry : map.entrySet()) {
-					System.out.println(entry.getKey() +
-							" " + String.format("%.4f", entry.getValue()));
-
-				}
+				System.out.println(this.processor.getVaccinatedPerCapita(vaccine));
 				System.out.println("END OUTPUT");
 				break;
 			}
 			else if(vaccine.equals("full")) {
 				System.out.println("BEGIN OUTPUT");
-				TreeMap<Integer, Double> map = this.processor.getFullyVaccinatedPerCapita();
-				for (Map.Entry<Integer, Double> entry : map.entrySet()) {
-					System.out.println(entry.getKey() +
-							" " + String.format("%.4f", entry.getValue()));
-				}
+				System.out.println(this.processor.getVaccinatedPerCapita(vaccine));
 				System.out.println("END OUTPUT");
 				break;
 			}
@@ -190,7 +181,7 @@ public class CommandUserInterface {
 
 	protected void getMaxVaccinePerCapita() {
 		System.out.println("BEGIN OUTPUT");
-		HashMap<Integer, List<Double>> map = this.processor.getMinMaxMktVal();
+		/*HashMap<Integer, List<Double>> map = this.processor.getMinMaxMktVal();
 		for (Entry<Integer, List<Double>> entry : map.entrySet()) {
 			System.out.println("Zip with Highest Per Capita Full Vaccinations: " + entry.getKey());
 			List<Double> list = map.get(entry.getKey());
@@ -211,7 +202,7 @@ public class CommandUserInterface {
 			}
 			
 		}
-		
+		*/
 		System.out.println("END OUTPUT");
 	}
 	

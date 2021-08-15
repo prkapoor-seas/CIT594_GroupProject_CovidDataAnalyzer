@@ -1,5 +1,8 @@
 package edu.upenn.cit594.processor;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import edu.upenn.cit594.datamanagement.CovidDataReader;
@@ -16,6 +19,7 @@ public class Processor {
 	protected List<CovidData> covidData;
 	protected PopulationDataReader popReader;
 	protected PropertiesDataReader propertiesDataReader;
+	protected HashMap<Integer, Integer> popMap;
 	protected List<PopulationData> popData;
 	protected List<PropertiesData> propertiesData;
 
@@ -23,8 +27,8 @@ public class Processor {
 	
 	// memoization
 	private static int totalPopulation = 0;
-	private static TreeMap<Integer, Double> fullMap = new TreeMap<Integer, Double>();
-	private static TreeMap<Integer, Double> partialMap = new TreeMap<Integer, Double>();
+	private static String partialPerCapVacc = "";
+	private static String fullPerCapVacc = "";
 	private static HashMap<Integer, Integer> avgMktValMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> avgLivMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
@@ -36,6 +40,7 @@ public class Processor {
 		this.covidData = covidReader.getAllRows();
 		this.popReader = popReader;
 		this.popData = popReader.getAllRows();
+		this.popMap = popReader.getMap();
 		this.propertiesDataReader = propertiesDataReader;
 		this.propertiesData = propertiesDataReader.getAllRows();
 	}
@@ -48,96 +53,120 @@ public class Processor {
 		}
 		
 		int totalPop = 0;
-		for(int i = 0; i < this.popData.size(); i++) {
+		
+		for(int key: this.popMap.keySet()) {
+			totalPop += this.popMap.get(key);
+		}
+		
+		/*for(int i = 0; i < this.popData.size(); i++) {
 			PopulationData data = this.popData.get(i);
 			totalPop += data.getPopulation();
-		}
+		}*/
 		
 		totalPopulation = totalPop;
 		return totalPop;
 	}
 	
 	
-	// This method returns the answer to 2a
-	public TreeMap<Integer, Double> getFullyVaccinatedPerCapita(){
+	// This outputs 2 depending on string being "full" or partial"
+	public String getVaccinatedPerCapita(String string) {
 		
-		if(!fullMap.isEmpty()) {
-			return fullMap;
+		if(string.equals("partial")) {
+			if(!partialPerCapVacc.isEmpty()) {
+				return partialPerCapVacc;
+			}
+		}
+		else if(string.equals("full")) {
+			if(!fullPerCapVacc.isEmpty()) {
+				return fullPerCapVacc;
+			}
 		}
 		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 		TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
-		
-		for(int i = 0; i < this.popData.size(); i++) {
-			PopulationData data = this.popData.get(i);
-			int zip = data.getZipcode();
-			double population = data.getPopulation();
+		//for(int i = 0; i < popData.size(); i++) {
+		for(int key: popMap.keySet()) {
 			
-			if(population == 0) {
+			double population = popMap.get(key);
+			int zip = key;
+			//PopulationData dat = popData.get(i);
+			//double population = dat.getPopulation();
+			//int zip = dat.getZipcode();
+			if(population==0) {
 				continue;
 			}
-		
-			Integer fullyVaccinated = 0;
-			for(int j = this.covidData.size() -1; j >=0 ; j--) {
-				if(this.covidData.get(j).getZipcode() == zip) {
-					fullyVaccinated = this.covidData.get(j).getFullyVaccinated();
-					break;
+			
+			Date maxDate = null;
+			Integer maxFullVacc = null;
+			Integer maxPartialVacc = null;
+			for(int j = 0; j < covidData.size(); j++) {
+				CovidData data = covidData.get(j);
+				if(data.getZipcode() == zip) {
+					
+					String str = data.getTimestamp();
+					while(str.contains("\"")) {
+						int index = str.indexOf("\"");
+						str = str.substring(0, index) + str.substring(index+1);
+					}
+							
+					Date date;
+					try {
+						date = dateFormat.parse(str);
+					} catch (ParseException e) {
+						continue;
+					}
+					
+					if(maxDate == null) {
+						maxDate = date;
+					}
+					else {
+						if(date.after(maxDate)) {
+							maxDate = date;
+							maxFullVacc = data.getFullyVaccinated();
+							maxPartialVacc = data.getPartiallyVaccinated();
+						}
+					}
 				}
+				
 			}
 			
-			if(fullyVaccinated != null && fullyVaccinated != 0) {
-				double fullyVacc = fullyVaccinated;
-				double perCapitaVaccinations = fullyVacc/population;
-				String value = (String) String.format("%.4f", perCapitaVaccinations);
-				double ret = Double.parseDouble(value);
-				map.put(zip, ret);
+			if(maxDate != null) {
+				
+				if(string.equals("partial")) {
+					if(maxPartialVacc != null) {
+						double maxPart = maxPartialVacc;
+						double perCapPartialVacc = maxPart/population;
+						map.put(zip, perCapPartialVacc);
+					}
+				}
+				else if(string.equals("full")) {
+					if(maxFullVacc != null) {
+						double maxFull = maxFullVacc;
+						double perCapFullVacc = maxFull/population;
+						map.put(zip, perCapFullVacc);
+					}
+				}
 			}
-		}
 
-		fullMap = map;
+		}
 		
-		return map;
+		String str = "";
+		for(int key: map.keySet()) {
+			str += String.valueOf(key) + " " +  String.format("%.4f", map.get(key)) + "\n";
+		}
+		
+		if(string.equals("full")) {
+			fullPerCapVacc = str;
+		}
+		else if(string.equals("partial")){
+			partialPerCapVacc = str;
+		}
+		
+		return str;
 	}
 	
-	// This method returns the answer to 2b
-	public TreeMap<Integer, Double> getPartiallyVaccinatedPerCapita(){
-		
-
-		if(!partialMap.isEmpty()) {
-			return partialMap;
-		}
-		
-		TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
-		
-		for(int i = 0; i < this.popData.size(); i++) {
-			PopulationData data = this.popData.get(i);
-			int zip = data.getZipcode();
-			double population = data.getPopulation();
-			
-			if(population == 0) {
-				continue;
-			}
-			
-			Integer partiallyVaccinated = 0;
-			for(int j = this.covidData.size()-1; j >= 0; j--) {
-				if(this.covidData.get(j).getZipcode() == zip ) {
-					partiallyVaccinated = this.covidData.get(j).getPartiallyVaccinated();
-					break;
-				}
-			}
-
-			if(partiallyVaccinated != null && partiallyVaccinated != 0) {
-				double partiallyVacc = partiallyVaccinated;
-				double perCapitaVaccinations = partiallyVacc/population;
-				String value = (String) String.format("%.4f", perCapitaVaccinations);
-				double ret = Double.parseDouble(value);
-				map.put(zip, ret);
-			}
-		}
-		
-		partialMap = map;
-		
-		return map;
-	}
+	
+	
 
 	// Common code using selector (strategy method) for 3 and 4
 	public int getAverage(int zip, PropertiesSelector selector) {
@@ -229,11 +258,19 @@ public class Processor {
 		}
 		
 		Integer population = null;
-		for(int i = 0; i < this.popData.size(); i++) {
+		
+		for(int key: popMap.keySet()) {
+			if(key == zip) {
+				population = this.popMap.get(key);
+				break;
+			}
+		}
+		
+		/*for(int i = 0; i < this.popData.size(); i++) {
 			if(this.popData.get(i).getZipcode() == zip) {
 				population = this.popData.get(i).getPopulation();
 			}
-		}
+		}*/
 		
 		// If population is 0 or null then return 0;
 		if(population == 0 || population == null) {
@@ -270,8 +307,9 @@ public class Processor {
 		return ret;
 		
 	}
+	
 	//This method returns the answer to 6 - get Highest Mkt Value and Lowest Mkt Value for zip with highest full vaccination per capita
-	public HashMap<Integer, List<Double>> getMinMaxMktVal(){
+	/*public HashMap<Integer, List<Double>> getMinMaxMktVal(){
 		
 		if(!minMaxMap.isEmpty()) {
 			return minMaxMap;
@@ -329,5 +367,6 @@ public class Processor {
 		minMaxMap.put(zip, list);
 		
 		return minMaxMap;
-	}
+	}*/
+	
 }
