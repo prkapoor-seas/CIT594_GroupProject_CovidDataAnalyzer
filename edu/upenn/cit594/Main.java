@@ -41,7 +41,10 @@ public class Main {
 		}
 
 		// logs runtime arguments
-		out = out + " " + args[0] + " " + args[1] + " " + args[2] + " " + args[3];
+		for(int i =0 ; i < args.length; i++){
+			out = out + " " + args[i];
+		}
+		//out = out + " " + args[0] + " " + args[1] + " " + args[2] + " " + args[3];
 		logger.logString(out);
 
 		CovidDataReader covidReader = null;
