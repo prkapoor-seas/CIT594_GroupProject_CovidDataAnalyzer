@@ -50,7 +50,7 @@ public class PropertiesReader implements PropertiesDataReader {
         }
         line = file.readLine();
         
-        Pattern pattern = Pattern.compile("(?:,|\\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\\n]*|(?:\\n|$))");
+        Pattern pattern = Pattern.compile("([^,\"]*|\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\")[,\n]" );
   
         while(line != null) {
         	ArrayList<String> strList = new ArrayList<String>();
