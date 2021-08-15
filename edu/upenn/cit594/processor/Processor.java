@@ -19,7 +19,7 @@ public class Processor {
 	protected List<CovidData> covidData;
 	protected PopulationDataReader popReader;
 	protected PropertiesDataReader propertiesDataReader;
-	protected HashMap<Integer, Integer> popMap;
+	protected TreeMap<Integer, Integer> popMap;
 	protected List<PopulationData> popData;
 	protected List<PropertiesData> propertiesData;
 
@@ -86,10 +86,14 @@ public class Processor {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 		DateFormat dateFormatTwo  = new SimpleDateFormat("dd/MM/yy HH:mm", Locale.ENGLISH);
-		TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
+		//TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
 		//for(int i = 0; i < popData.size(); i++) {
+		
+		String out = "";
+		Integer maxZip = null;
+		Double maxVacc = null;
 		for(int key: popMap.keySet()) {
-			
+		
 			double population = popMap.get(key);
 			int zip = key;
 			//PopulationData dat = popData.get(i);
@@ -150,49 +154,41 @@ public class Processor {
 					if(maxPartialVacc != null) {
 						double maxPart = maxPartialVacc;
 						double perCapPartialVacc = maxPart/population;
-						map.put(zip, perCapPartialVacc);
+						//map.put(zip, perCapPartialVacc);
+						out += String.valueOf(key) + " " +  String.format("%.4f", perCapPartialVacc) + "\n";
 					}
 				}
 				else if(string.equals("full")) {
 					if(maxFullVacc != null) {
 						double maxFull = maxFullVacc;
 						double perCapFullVacc = maxFull/population;
-						map.put(zip, perCapFullVacc);
+						if(maxZip == null) {
+							maxZip = zip;
+							maxVacc = perCapFullVacc;
+						}
+						else {
+							if(perCapFullVacc > maxVacc) {
+								maxZip = zip;
+								maxVacc = perCapFullVacc;
+							}
+						}
+						//map.put(zip, perCapFullVacc);
+						out += String.valueOf(key) + " " +  String.format("%.4f", perCapFullVacc) + "\n";
 					}
 				}
 			}
 
 		}
 		
-		String str = "";
-		for(int key: map.keySet()) {
-			str += String.valueOf(key) + " " +  String.format("%.4f", map.get(key)) + "\n";
-		}
-		
 		if(string.equals("full")) {
-			fullPerCapVacc = str;
-			Integer maxZip = null;
-			Double maxVacc = null;
-			for(int key: map.keySet()) {
-				if(maxZip == null) {
-					maxZip = key;
-					maxVacc = map.get(key);
-				}
-				else {
-					if(map.get(key) > maxVacc) {
-						maxZip = key;
-						maxVacc = map.get(key);
-					}
-				}
-			}
+			fullPerCapVacc = out;
 			zipWithMaxPerCapVacc = maxZip;
-			
 		}
 		else if(string.equals("partial")){
-			partialPerCapVacc = str;
+			partialPerCapVacc = out;
 		}
 		
-		return str;
+		return out;
 	}
 
 	
@@ -339,8 +335,7 @@ public class Processor {
 	
 	//This method returns the answer to 6 - get Highest Mkt Value and Lowest Mkt Value for zip with highest full vaccination per capita
 	public String getMinMaxMktVal(){
-		
-		
+	
 		if(!outputOfSix.isEmpty()) {
 			return outputOfSix;
 		}
@@ -397,12 +392,6 @@ public class Processor {
 		
 		return str;
 		
-		/*ArrayList<Double> list = new ArrayList<Double>();
-		list.add(max);
-		list.add(min);
-		minMaxMap.put(zip, list);
-		
-		return minMaxMap;*/
 	}
 	
 }

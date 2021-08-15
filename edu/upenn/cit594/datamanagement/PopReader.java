@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.PopulationData;
@@ -20,7 +21,7 @@ public class PopReader implements PopulationDataReader{
 	public PopReader(String filename) {
 		this.filename = filename;
 	}
-
+	
 	public List<PopulationData> getAllRows() throws Exception {
 
 		 File inputFile = new File(filename);
@@ -56,7 +57,7 @@ public class PopReader implements PopulationDataReader{
 		return list;
 	}
 	
-	public HashMap<Integer, Integer> getMap() throws Exception{
+	public TreeMap<Integer, Integer> getMap() throws Exception{
 		
 		 File inputFile = new File(filename);
 		 
@@ -67,7 +68,7 @@ public class PopReader implements PopulationDataReader{
 	     
 	    BufferedReader file = new BufferedReader(new FileReader(inputFile));
 		
-		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
 		
 		String line = file.readLine();
 		
