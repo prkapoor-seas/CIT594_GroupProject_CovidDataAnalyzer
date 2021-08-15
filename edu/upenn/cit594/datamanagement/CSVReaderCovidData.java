@@ -72,13 +72,22 @@ public class CSVReaderCovidData implements CovidDataReader{
 			
 			try {
 				zipcode = Integer.parseInt(text[zipIndex]);
-				partiallyVaccinated = Integer.parseInt(text[partialIndex]);
-			    fullyVaccinated = Integer.parseInt(text[fullIndex]);
 			}
-			catch(NumberFormatException e) {
+			catch(Exception e) {
 				
 			}
-			 
+			try {
+				partiallyVaccinated = Integer.parseInt(text[partialIndex]);
+			}
+			catch(Exception e) {
+				
+			}
+			try {
+				fullyVaccinated = Integer.parseInt(text[fullIndex]);
+			}
+			catch(Exception e) {
+				
+			}
 			
 			if(zipcode != null && !timeStamp.isBlank()) {
 				CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);

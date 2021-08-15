@@ -41,22 +41,33 @@ String filename;
         	Integer zip = null;
         	Integer partialVacc = null;
         	Integer fullyVacc = null;
-        	String timeStamp = "";
+        	String timeStamp = (String) jo.get("etl_timestamp");   	
         	
         	try {
         		zip = (int) (long) jo.get("zip_code");
-        		partialVacc = (int) (long) jo.get("partially_vaccinated");
-                fullyVacc = (int) (long) jo.get("fully_vaccinated");
-            	timeStamp = (String) jo.get("etl_timestamp");    	
         	}
         	catch(Exception e) {
-        	
+        		
+        	}        	
+        	try {
+        		partialVacc = (int) (long) jo.get("partially_vaccinated");
+        	}
+        	catch(Exception e) {
+        		
+        	}
+        	try {
+        		fullyVacc = (int) (long) jo.get("fully_vaccinated");
+        	}
+        	catch(Exception e) {
+        		
         	}
         	
         	if(zip != null && !timeStamp.isBlank()) {
         		CovidData data = new CovidData(zip, partialVacc, fullyVacc, timeStamp);
             	list.add(data);
         	}
+        	
+        	
         }
         
 		return list;

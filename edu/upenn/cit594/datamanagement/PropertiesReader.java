@@ -71,20 +71,32 @@ public class PropertiesReader implements PropertiesDataReader {
             String livableArea = strList.get(livableAreaIndex);
             String marketValue = strList.get(marketValueIndex);
             
-            int zipCode = 0;
-            double livArea = 0.0;
-            double markValue = 0.0;
+            Integer zipCode = null;
+            Double livArea = null;
+            Double markValue = null;
             
             try {
             	zipCode = Integer.parseInt(zip);
+            }
+            catch(Exception e) {
+            	
+            }
+            try {
             	livArea = Double.parseDouble(livableArea);
+            }
+            catch(Exception e) {
+            	
+            }
+            try {
             	markValue = Double.parseDouble(marketValue);
             }
-            catch(NumberFormatException e) {
+            catch(Exception e) {
             	
             }
             
-            if(zipCode != 0 ) {
+        	
+        	
+            if(zipCode != null) {
             	PropertiesData data = new PropertiesData(zipCode, livArea, markValue);
             	list.add(data);
             }
