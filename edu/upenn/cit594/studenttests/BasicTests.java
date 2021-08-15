@@ -146,6 +146,7 @@ public class BasicTests {
 		 */
 		for(String line: sResult1)
 		{
+			//System.out.println(line);
 			assertTrue("bad line "+line, line.matches("^\\d+ [\\d\\.]+$"));
 		}
 	}

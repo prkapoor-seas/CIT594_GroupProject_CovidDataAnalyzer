@@ -89,13 +89,13 @@ public class CommandUserInterface {
 			vaccine = in.nextLine();
 			if(vaccine.equals("partial")) {
 				System.out.println("BEGIN OUTPUT");
-				System.out.println(this.processor.getVaccinatedPerCapita(vaccine));
+				System.out.print(this.processor.getVaccinatedPerCapita(vaccine));
 				System.out.println("END OUTPUT");
 				break;
 			}
 			else if(vaccine.equals("full")) {
 				System.out.println("BEGIN OUTPUT");
-				System.out.println(this.processor.getVaccinatedPerCapita(vaccine));
+				System.out.print(this.processor.getVaccinatedPerCapita(vaccine));
 				System.out.println("END OUTPUT");
 				break;
 			}
@@ -104,7 +104,7 @@ public class CommandUserInterface {
 	}
 	
 	protected void getAvgMktValue() {
-		System.out.println("Please enter a zip code below");
+		System.out.print("Please enter a zip code below");
 		System.out.println("> ");
 		System.out.flush();
 		
