@@ -93,8 +93,6 @@ public class PropertiesReader implements PropertiesDataReader {
             catch(Exception e) {
             	
             }
-            
-        	
         	
             if(zipCode != null) {
             	PropertiesData data = new PropertiesData(zipCode, livArea, markValue);

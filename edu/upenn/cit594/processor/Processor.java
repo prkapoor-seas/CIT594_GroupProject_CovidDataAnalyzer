@@ -299,16 +299,15 @@ public class Processor {
 				zip = key;
 			}
 		}
-	
-		//System.out.println(zip);
+		
+		int zipCode = zip;
 		
 		// get max market value for zipcode from propertiesData
 		Double max = null;
 		Double min = null;
 		
 		for (PropertiesData data : propertiesData) {
-			if (data.getZipcode() == zip && data.getMarketValue() != null) {
-				// check if max and min have been initialized if not initialize with first non-null market value for the zip
+			if (data.getZipcode() == zipCode && data.getMarketValue() != null) {
 				if(max == null || min == null) {
 					max = data.getMarketValue();
 					min = data.getMarketValue();
@@ -323,7 +322,7 @@ public class Processor {
 				}
 			}
 		}
-	
+		
 		ArrayList<Double> list = new ArrayList<Double>();
 		list.add(max);
 		list.add(min);
