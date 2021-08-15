@@ -39,7 +39,7 @@ public class BasicTests {
 			}
 		});
 	}
-	
+
 	@After
 	public void resetExit() {
 		System.setSecurityManager(null);

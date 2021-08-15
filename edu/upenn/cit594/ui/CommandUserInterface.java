@@ -93,7 +93,7 @@ public class CommandUserInterface {
 			out+= " " + vaccine;
 			logger.logString(out);
 			
-			
+		
 			if(vaccine.equals("partial")) {
 				System.out.println("BEGIN OUTPUT");
 				System.out.print(this.processor.getVaccinatedPerCapita(vaccine));

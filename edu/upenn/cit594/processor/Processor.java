@@ -85,6 +85,7 @@ public class Processor {
 		}
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+		DateFormat dateFormatTwo  = new SimpleDateFormat("dd/MM/yy HH:mm", Locale.ENGLISH);
 		TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
 		//for(int i = 0; i < popData.size(); i++) {
 		for(int key: popMap.keySet()) {
@@ -97,6 +98,7 @@ public class Processor {
 			if(population==0) {
 				continue;
 			}
+		
 			
 			Date maxDate = null;
 			Integer maxFullVacc = null;
@@ -111,11 +113,21 @@ public class Processor {
 						str = str.substring(0, index) + str.substring(index+1);
 					}
 							
-					Date date;
+		
+					
+					Date date = null;
 					try {
 						date = dateFormat.parse(str);
 					} catch (ParseException e) {
-						continue;
+						
+					}
+					
+					if(date == null) {
+						try {
+							date = dateFormatTwo.parse(str);
+						} catch (ParseException e) {
+							continue;
+						}
 					}
 					
 					if(maxDate == null) {
@@ -182,8 +194,7 @@ public class Processor {
 		
 		return str;
 	}
-	
-	
+
 	
 
 	// Common code using selector (strategy method) for 3 and 4
@@ -257,7 +268,7 @@ public class Processor {
 		avgLivMap.put(zip, ret);
 		
 		return ret;
-		
+	
 	}
 
 	// This method returns the answer to 5
@@ -350,7 +361,7 @@ public class Processor {
 		Double min = null;
 		
 		for (PropertiesData data : propertiesData) {
-			if (data.getZipcode() == zipCode && data.getMarketValue() != null) {
+			if (data.getZipcode() == zip && data.getMarketValue() != null) {
 				if(max == null || min == null) {
 					max = data.getMarketValue();
 					min = data.getMarketValue();
