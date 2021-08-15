@@ -10,7 +10,6 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import edu.upenn.cit594.logging.Logger;
-import edu.upenn.cit594.util.PopulationData;
 
 public class PopReader implements PopulationDataReader{
 	
@@ -20,41 +19,6 @@ public class PopReader implements PopulationDataReader{
 	
 	public PopReader(String filename) {
 		this.filename = filename;
-	}
-	
-	public List<PopulationData> getAllRows() throws Exception {
-
-		 File inputFile = new File(filename);
-		 
-		long time = System.currentTimeMillis();
-		String out = Long.toString(time);
-		out += " " + filename;
-		logger.logString(out); 
-	     
-	     BufferedReader file = new BufferedReader(new FileReader(inputFile));
-	     
-	     List<PopulationData> list = new ArrayList<PopulationData>();
-	        
-		String line = file.readLine();
-		
-		 while(line != null) {
-			 String txt[]  = line.split(" ",-1);
-			 
-			 try {
-				Integer zipcode = Integer.parseInt(txt[0]);
-				Integer population = Integer.parseInt(txt[1]);
-				PopulationData data = new PopulationData(zipcode, population);
-				list.add(data);
-			}
-			catch(NumberFormatException e) {
-				
-			}
-			
-			line = file.readLine();
-		 }
-		
-		
-		return list;
 	}
 	
 	public TreeMap<Integer, Integer> getMap() throws Exception{

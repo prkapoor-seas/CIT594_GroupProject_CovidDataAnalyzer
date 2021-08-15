@@ -10,7 +10,6 @@ import edu.upenn.cit594.datamanagement.PopulationDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesDataReader;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.CovidData;
-import edu.upenn.cit594.util.PopulationData;
 import edu.upenn.cit594.util.PropertiesData;
 
 public class Processor {
@@ -20,7 +19,6 @@ public class Processor {
 	protected PopulationDataReader popReader;
 	protected PropertiesDataReader propertiesDataReader;
 	protected TreeMap<Integer, Integer> popMap;
-	protected List<PopulationData> popData;
 	protected List<PropertiesData> propertiesData;
 
 	protected Logger logger = Logger.getInstance(); // check on this
@@ -41,7 +39,6 @@ public class Processor {
 		this.covidReader = covidReader;
 		this.covidData = covidReader.getAllRows();
 		this.popReader = popReader;
-		this.popData = popReader.getAllRows();
 		this.popMap = popReader.getMap();
 		this.propertiesDataReader = propertiesDataReader;
 		this.propertiesData = propertiesDataReader.getAllRows();
