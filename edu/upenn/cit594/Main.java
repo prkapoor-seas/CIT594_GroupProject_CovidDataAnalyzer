@@ -22,11 +22,6 @@ public class Main {
 		long time = System.currentTimeMillis();
 		String out = Long.toString(time);
 		
-		if(args.length != 4) {
-			System.out.println("Error in Syntax: covidDataFilename propertiesDataFilename popDataFilename logFilename");
-			return;
-		}
-
 		String covidDataFilename = args[0];
 		String propertiesDataFilename = args[1];
 		String popDataFilename = args[2];
@@ -44,8 +39,12 @@ public class Main {
 		for(int i =0 ; i < args.length; i++){
 			out = out + " " + args[i];
 		}
-		//out = out + " " + args[0] + " " + args[1] + " " + args[2] + " " + args[3];
 		logger.logString(out);
+		
+		if(args.length != 4) {
+			System.out.println("Error in Syntax: covidDataFilename propertiesDataFilename popDataFilename logFilename");
+			return;
+		}
 
 		CovidDataReader covidReader = null;
 		if(covidDataFilename.substring(covidDataFilename.length()-4).toLowerCase().equals(".csv")) {
