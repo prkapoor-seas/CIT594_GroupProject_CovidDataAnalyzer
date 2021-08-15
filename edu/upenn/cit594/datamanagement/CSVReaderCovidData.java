@@ -72,19 +72,19 @@ public class CSVReaderCovidData implements CovidDataReader{
 	         Integer fullyVaccinated = null;
 	         
 	         try {
-	            zipcode = Integer.parseInt(text[zipIndex]);
+	            zipcode = Integer.parseInt(text[zipIndex].trim());
 	         }
 	         catch(Exception e) {
 	            
 	         }
 	         try {
-	            partiallyVaccinated = Integer.parseInt(text[partialIndex]);
+	            partiallyVaccinated = Integer.parseInt(text[partialIndex].trim());
 	         }
 	         catch(Exception e) {
 	            
 	         }
 	         try {
-	            fullyVaccinated = Integer.parseInt(text[fullIndex]);
+	            fullyVaccinated = Integer.parseInt(text[fullIndex].trim());
 	         }
 	         catch(Exception e) {
 	            
@@ -103,7 +103,7 @@ public class CSVReaderCovidData implements CovidDataReader{
 	               map.put(zipcode, newList);
 	            }
 	         }
-	         
+	        
 	         line = file.readLine();
 	      }
 

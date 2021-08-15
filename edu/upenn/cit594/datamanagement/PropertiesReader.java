@@ -27,7 +27,7 @@ public class PropertiesReader implements PropertiesDataReader {
 		out += " " + filename;
 		logger.logString(out); 
         
-		
+	
         BufferedReader file = new BufferedReader(new FileReader(inputFile));
         
         List<PropertiesData> list = new LinkedList<PropertiesData>();
@@ -49,10 +49,14 @@ public class PropertiesReader implements PropertiesDataReader {
             }
         }
         line = file.readLine();
+        if(line != null) {
+        	line = line.trim().concat("\n");
+        }
         
         Pattern pattern = Pattern.compile("([^,\"]*|\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"|\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\"[^\"]*\")[,\n]" );
-  
+        
         while(line != null) {
+        	line = line.trim().concat("\n");
         	ArrayList<String> strList = new ArrayList<String>();
             Matcher matcher = pattern.matcher(line);
             while(matcher.find()) {

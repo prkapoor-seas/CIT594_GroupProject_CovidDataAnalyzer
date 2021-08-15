@@ -32,7 +32,6 @@ public class Processor {
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
 	private static Integer zipWithMaxPerCapVacc = null;
 	private static String outputOfSix = "";
-	//private static HashMap<Integer, List<Double>> minMaxMap = new HashMap<Integer, List<Double>>();
 
 
 	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propertiesDataReader) throws Exception{
@@ -57,11 +56,6 @@ public class Processor {
 			totalPop += this.popMap.get(key);
 		}
 		
-		/*for(int i = 0; i < this.popData.size(); i++) {
-			PopulationData data = this.popData.get(i);
-			totalPop += data.getPopulation();
-		}*/
-		
 		totalPopulation = totalPop;
 		return totalPop;
 	}
@@ -83,8 +77,7 @@ public class Processor {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 		DateFormat dateFormatTwo  = new SimpleDateFormat("dd/MM/yy HH:mm", Locale.ENGLISH);
-		//TreeMap<Integer, Double> map = new TreeMap<Integer, Double>();
-		//for(int i = 0; i < popData.size(); i++) {
+
 		
 		String out = "";
 		Integer maxZip = null;
@@ -93,9 +86,7 @@ public class Processor {
 		
 			double population = popMap.get(key);
 			int zip = key;
-			//PopulationData dat = popData.get(i);
-			//double population = dat.getPopulation();
-			//int zip = dat.getZipcode();
+
 			if(population==0) {
 				continue;
 			}
@@ -152,7 +143,7 @@ public class Processor {
 					if(maxPartialVacc != null) {
 						double maxPart = maxPartialVacc;
 						double perCapPartialVacc = maxPart/population;
-						//map.put(zip, perCapPartialVacc);
+					
 						out += String.valueOf(key) + " " +  String.format("%.4f", perCapPartialVacc) + "\n";
 					}
 				}
@@ -170,7 +161,7 @@ public class Processor {
 								maxVacc = perCapFullVacc;
 							}
 						}
-						//map.put(zip, perCapFullVacc);
+		
 						out += String.valueOf(key) + " " +  String.format("%.4f", perCapFullVacc) + "\n";
 					}
 				}
@@ -289,12 +280,7 @@ public class Processor {
 			}
 		}
 		
-		/*for(int i = 0; i < this.popData.size(); i++) {
-			if(this.popData.get(i).getZipcode() == zip) {
-				population = this.popData.get(i).getPopulation();
-			}
-		}*/
-		
+
 		// If population is 0 or null then return 0;
 		if(population == 0 || population == null) {
 			MktValPerCapMap.put(zip, 0);

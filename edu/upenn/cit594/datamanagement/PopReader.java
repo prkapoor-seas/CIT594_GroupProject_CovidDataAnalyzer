@@ -40,8 +40,8 @@ public class PopReader implements PopulationDataReader{
 			 String txt[]  = line.split(" ",-1);
 			 
 			 try {
-				Integer zipcode = Integer.parseInt(txt[0]);
-				Integer population = Integer.parseInt(txt[1]);
+				Integer zipcode = Integer.parseInt(txt[0].trim());
+				Integer population = Integer.parseInt(txt[1].trim());
 				if(map.containsKey(zipcode)) {
 					throw new Exception();
 				}
