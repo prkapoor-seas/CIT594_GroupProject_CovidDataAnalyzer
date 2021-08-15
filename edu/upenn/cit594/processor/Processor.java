@@ -32,7 +32,9 @@ public class Processor {
 	private static HashMap<Integer, Integer> avgMktValMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> avgLivMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
-	private static HashMap<Integer, List<Double>> minMaxMap = new HashMap<Integer, List<Double>>();
+	private static Integer zipWithMaxPerCapVacc = null;
+	private static String outputOfSix = "";
+	//private static HashMap<Integer, List<Double>> minMaxMap = new HashMap<Integer, List<Double>>();
 
 
 	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propertiesDataReader) throws Exception{
@@ -157,6 +159,22 @@ public class Processor {
 		
 		if(string.equals("full")) {
 			fullPerCapVacc = str;
+			Integer maxZip = null;
+			Double maxVacc = null;
+			for(int key: map.keySet()) {
+				if(maxZip == null) {
+					maxZip = key;
+					maxVacc = map.get(key);
+				}
+				else {
+					if(map.get(key) > maxVacc) {
+						maxZip = key;
+						maxVacc = map.get(key);
+					}
+				}
+			}
+			zipWithMaxPerCapVacc = maxZip;
+			
 		}
 		else if(string.equals("partial")){
 			partialPerCapVacc = str;
@@ -309,36 +327,23 @@ public class Processor {
 	}
 	
 	//This method returns the answer to 6 - get Highest Mkt Value and Lowest Mkt Value for zip with highest full vaccination per capita
-	/*public HashMap<Integer, List<Double>> getMinMaxMktVal(){
+	public String getMinMaxMktVal(){
 		
-		if(!minMaxMap.isEmpty()) {
-			return minMaxMap;
-		}
-
-		TreeMap<Integer, Double> map;
-		if (!fullMap.isEmpty()){
-			map = fullMap;
-		}
-		else{
-			map = getFullyVaccinatedPerCapita();
-		}
-
-		// get zip with the max fullyvaccinated from map
-		Double m = null;
-		Integer zip = null;
-		for(int key: map.keySet()) {
-			// initialize m if not initialized by the first entry
-			if(m == null) {
-				m = map.get(key);
-				zip = key;
-			}
-			else if(m < map.get(key)){
-				m = map.get(key);
-				zip = key;
-			}
+		
+		if(!outputOfSix.isEmpty()) {
+			return outputOfSix;
 		}
 		
-		int zipCode = zip;
+		this.getVaccinatedPerCapita("full");
+		Integer zipCode = zipWithMaxPerCapVacc;
+		
+		if(zipCode == null) {
+			String str = "Zip is invalid or null. No min or max market value \n";
+			outputOfSix = str;
+			return str;
+		}
+		
+		int zip = zipCode;
 		
 		// get max market value for zipcode from propertiesData
 		Double max = null;
@@ -361,12 +366,32 @@ public class Processor {
 			}
 		}
 		
-		ArrayList<Double> list = new ArrayList<Double>();
+		String str = "Zip with Highest Per Capita Full Vaccinations: " + String.valueOf(zip) + "\n";
+		if(max == null) {
+			str += "Max Market Value for Zip above : Invalid Zip\n";
+			
+		}
+		else {
+			str += "Max Market Value for : " + max + "\n";
+		}
+		
+		if(min == null) {
+			str += "Min Market Value for Zip above : Invalid Zip\n";
+		}
+		else {
+			str += "Min Market Value for : " + min + "\n";
+		}
+		
+		outputOfSix = str;
+		
+		return str;
+		
+		/*ArrayList<Double> list = new ArrayList<Double>();
 		list.add(max);
 		list.add(min);
 		minMaxMap.put(zip, list);
 		
-		return minMaxMap;
-	}*/
+		return minMaxMap;*/
+	}
 	
 }

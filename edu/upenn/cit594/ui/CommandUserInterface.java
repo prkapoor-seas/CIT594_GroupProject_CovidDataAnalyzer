@@ -87,6 +87,13 @@ public class CommandUserInterface {
 			System.out.println("> ");
 			System.out.flush();
 			vaccine = in.nextLine();
+			
+			long time = System.currentTimeMillis();
+			String out = Long.toString(time);
+			out+= " " + vaccine;
+			logger.logString(out);
+			
+			
 			if(vaccine.equals("partial")) {
 				System.out.println("BEGIN OUTPUT");
 				System.out.print(this.processor.getVaccinatedPerCapita(vaccine));
@@ -150,9 +157,6 @@ public class CommandUserInterface {
 			System.out.println("Error: Invalid input");
 		}
 		
-		System.out.println("BEGIN OUTPUT");
-		
-		System.out.println("END OUTPUT");
 	}
 	
 	protected void getResMktValPerCapita() {
@@ -181,28 +185,7 @@ public class CommandUserInterface {
 
 	protected void getMaxVaccinePerCapita() {
 		System.out.println("BEGIN OUTPUT");
-		/*HashMap<Integer, List<Double>> map = this.processor.getMinMaxMktVal();
-		for (Entry<Integer, List<Double>> entry : map.entrySet()) {
-			System.out.println("Zip with Highest Per Capita Full Vaccinations: " + entry.getKey());
-			List<Double> list = map.get(entry.getKey());
-			Double max = list.get(0);
-			Double min = list.get(1);
-			if(max == null) {
-				System.out.println("Max Market Value for Zip above : Invalid Zip");
-			}
-			else {
-				System.out.println("Max Market Value for : " + max);
-			}
-			
-			if(min == null) {
-				System.out.println("Max Market Value for Zip above : Invalid Zip");
-			}
-			else {
-				System.out.println("Max Market Value for : " + min);
-			}
-			
-		}
-		*/
+		System.out.println(this.processor.getMinMaxMktVal());
 		System.out.println("END OUTPUT");
 	}
 	
