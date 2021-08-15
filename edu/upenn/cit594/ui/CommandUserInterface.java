@@ -82,7 +82,7 @@ public class CommandUserInterface {
 	protected void getVaccinationsPerCapita() {
 
 		String vaccine = "";
-		while(!vaccine.equals("partial") | !vaccine.equals("full")) {
+		while(!vaccine.equals("partial") || !vaccine.equals("full")) {
 			System.out.println("Enter \"partial\" for partial vaccinations or \"full\" for full vaccinations");
 			System.out.println("> ");
 			System.out.flush();
@@ -190,7 +190,7 @@ public class CommandUserInterface {
 
 	protected void getMaxVaccinePerCapita() {
 		System.out.println("BEGIN OUTPUT");
-		HashMap<Integer, List<Double>> map = this.processor.getZipWithHighestFullVaccinationPerCapita();
+		HashMap<Integer, List<Double>> map = this.processor.getMinMaxMktVal();
 		for (Entry<Integer, List<Double>> entry : map.entrySet()) {
 			System.out.println("Zip with Highest Per Capita Full Vaccinations: " + entry.getKey());
 			List<Double> list = map.get(entry.getKey());

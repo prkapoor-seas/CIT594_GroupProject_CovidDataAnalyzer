@@ -29,7 +29,7 @@ public class Processor {
 	private static HashMap<Integer, Integer> avgLivMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
 	private static HashMap<Integer, List<Double>> minMaxMap = new HashMap<Integer, List<Double>>();
-	
+
 
 	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propertiesDataReader) throws Exception{
 		this.covidReader = covidReader;
@@ -85,7 +85,8 @@ public class Processor {
 			}
 			
 			if(fullyVaccinated != null && fullyVaccinated != 0) {
-				double perCapitaVaccinations = fullyVaccinated/population;
+				double fullyVacc = fullyVaccinated;
+				double perCapitaVaccinations = fullyVacc/population;
 				String value = (String) String.format("%.4f", perCapitaVaccinations);
 				double ret = Double.parseDouble(value);
 				map.put(zip, ret);
@@ -270,7 +271,7 @@ public class Processor {
 		
 	}
 	//This method returns the answer to 6 - get Highest Mkt Value and Lowest Mkt Value for zip with highest full vaccination per capita
-	public HashMap<Integer, List<Double>> getZipWithHighestFullVaccinationPerCapita(){
+	public HashMap<Integer, List<Double>> getMinMaxMktVal(){
 		
 		if(!minMaxMap.isEmpty()) {
 			return minMaxMap;
@@ -308,7 +309,7 @@ public class Processor {
 		for (PropertiesData data : propertiesData) {
 			if (data.getZipcode() == zip && data.getMarketValue() != null) {
 				// check if max and min have been initialized if not initialize with first non-null market value for the zip
-				if(max == null | min == null) {
+				if(max == null || min == null) {
 					max = data.getMarketValue();
 					min = data.getMarketValue();
 				}
