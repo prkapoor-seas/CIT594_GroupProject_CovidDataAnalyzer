@@ -34,7 +34,7 @@ public class CommandUserInterface {
 			String out = Long.toString(time);
 			out+= " " + String.valueOf(choice);
 			logger.logString(out);
-		
+	
 			int ch;
 			try {
 				ch = Integer.parseInt(choice);
@@ -81,31 +81,30 @@ public class CommandUserInterface {
 	
 	protected void getVaccinationsPerCapita() {
 
-		String vaccine = "";
-		while(!vaccine.equals("partial") || !vaccine.equals("full")) {
-			System.out.println("Enter \"partial\" for partial vaccinations or \"full\" for full vaccinations");
-			System.out.println("> ");
-			System.out.flush();
-			vaccine = in.nextLine();
-			
-			long time = System.currentTimeMillis();
-			String out = Long.toString(time);
-			out+= " " + vaccine;
-			logger.logString(out);
-			
+		System.out.println("Enter \"partial\" for partial vaccinations or \"full\" for full vaccinations");
+		System.out.println("> ");
+		System.out.flush();
+		String vaccine = in.nextLine();
 		
-			if(vaccine.equals("partial")) {
-				System.out.println("BEGIN OUTPUT");
-				System.out.print(this.processor.getVaccinatedPerCapita(vaccine));
-				System.out.println("END OUTPUT");
-				break;
-			}
-			else if(vaccine.equals("full")) {
-				System.out.println("BEGIN OUTPUT");
-				System.out.print(this.processor.getVaccinatedPerCapita(vaccine));
-				System.out.println("END OUTPUT");
-				break;
-			}
+		long time = System.currentTimeMillis();
+		String out = Long.toString(time);
+		out+= " " + vaccine;
+		logger.logString(out);
+		
+		vaccine = vaccine.toLowerCase();
+	
+		if(vaccine.equals("partial")) {
+			System.out.println("BEGIN OUTPUT");
+			System.out.print(this.processor.getVaccinatedPerCapita(vaccine));
+			System.out.println("END OUTPUT");
+		}
+		else if(vaccine.equals("full")) {
+			System.out.println("BEGIN OUTPUT");
+			System.out.print(this.processor.getVaccinatedPerCapita(vaccine));
+			System.out.println("END OUTPUT");
+		}
+		else {
+			System.out.println("Error: Invalid choice");
 		}
 		
 	}
