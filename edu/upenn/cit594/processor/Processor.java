@@ -16,7 +16,7 @@ import edu.upenn.cit594.util.PropertiesData;
 public class Processor {
 
 	protected CovidDataReader covidReader;
-	protected List<CovidData> covidData;
+	protected HashMap<Integer, List<CovidData>> covidData;
 	protected PopulationDataReader popReader;
 	protected PropertiesDataReader propertiesDataReader;
 	protected TreeMap<Integer, Integer> popMap;
@@ -107,8 +107,9 @@ public class Processor {
 			Date maxDate = null;
 			Integer maxFullVacc = null;
 			Integer maxPartialVacc = null;
-			for(int j = 0; j < covidData.size(); j++) {
-				CovidData data = covidData.get(j);
+			List<CovidData> list = covidData.get(zip);
+			for(int i = 0; i < list.size(); i++) {
+				CovidData data = list.get(i);
 				if(data.getZipcode() == zip) {
 					
 					String str = data.getTimestamp();

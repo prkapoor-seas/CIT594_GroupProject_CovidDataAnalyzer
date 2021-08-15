@@ -34,7 +34,7 @@ public class CommandUserInterface {
 			String out = Long.toString(time);
 			out+= " " + String.valueOf(choice);
 			logger.logString(out);
-			
+		
 			int ch;
 			try {
 				ch = Integer.parseInt(choice);
