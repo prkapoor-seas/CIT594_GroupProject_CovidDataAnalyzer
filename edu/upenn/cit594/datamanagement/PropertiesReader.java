@@ -19,11 +19,18 @@ public class PropertiesReader implements PropertiesDataReader {
     }
 
     public List<PropertiesData> getAllRows() throws Exception {
-        List<PropertiesData> list = new LinkedList<PropertiesData>();
 
         File inputFile = new File(filename);
-        logger.logString(filename);
+
+		long time = System.currentTimeMillis();
+		String out = Long.toString(time);
+		out += " " + filename;
+		logger.logString(out); 
+        
+		
         BufferedReader file = new BufferedReader(new FileReader(inputFile));
+        
+        List<PropertiesData> list = new LinkedList<PropertiesData>();
 
         String line = file.readLine();
         String[] firstLineAsArray = line.split(",");

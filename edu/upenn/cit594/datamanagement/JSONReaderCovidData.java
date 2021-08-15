@@ -23,36 +23,38 @@ String filename;
 	}
 	
 	public List<CovidData> getAllRows() throws Exception {
-		
-		List<CovidData> list = new ArrayList<CovidData>();
+	
+		long time = System.currentTimeMillis();
+		String out = Long.toString(time);
+		out += " " + filename;
+		logger.logString(out); 
 		
 		Object obj = new JSONParser().parse(new FileReader(this.filename));
-
-		logger.logString(filename);
-		
         JSONArray ja = (JSONArray) obj;
+        
+        List<CovidData> list = new ArrayList<CovidData>();
         
         for(int i = 0; i < ja.size(); i++) {
         	
         	JSONObject jo = (JSONObject) ja.get(i);
         	
-        	long zipcode = 0;
-        	long partiallyVaccinated = 0;
-        	long fullyVaccinated = 0;
+        	Integer zip = null;
+        	Integer partialVacc = null;
+        	Integer fullyVacc = null;
         	String timeStamp = "";
         	
         	try {
-        		zipcode = (long) jo.get("zip_code");
-        		partiallyVaccinated = (long) jo.get("partially_vaccinated");
-            	fullyVaccinated = (long) jo.get("fully_vaccinated");
-            	timeStamp = (String) jo.get("etl_timestamp");
+        		zip = (int) (long) jo.get("zip_code");
+        		partialVacc = (int) (long) jo.get("partially_vaccinated");
+                fullyVacc = (int) (long) jo.get("fully_vaccinated");
+            	timeStamp = (String) jo.get("etl_timestamp");    	
         	}
-        	catch(NullPointerException e) {
-        		
+        	catch(Exception e) {
+        	
         	}
         	
-        	if(zipcode != 0 & !timeStamp.isBlank()) {
-        		CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
+        	if(zip != null && !timeStamp.isBlank()) {
+        		CovidData data = new CovidData(zip, partialVacc, fullyVacc, timeStamp);
             	list.add(data);
         	}
         }

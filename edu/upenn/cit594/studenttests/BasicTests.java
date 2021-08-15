@@ -130,8 +130,12 @@ public class BasicTests {
 		//System.out.println(result1);
 		String result2 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "2\nfull\n0\n");
 
+		String result3 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "4\n19104\n3\n19104\n0\n");
+
+		
 		Set<String> sResult1 = new HashSet<>(extractResults(result1));
 		Set<String> sResult2 = new HashSet<>(extractResults(result2));
+		Set<String> sResult3 = new HashSet<>(extractResults(result3));
 		//System.out.println(sResult1);
 		//System.out.println(sResult2);
 		

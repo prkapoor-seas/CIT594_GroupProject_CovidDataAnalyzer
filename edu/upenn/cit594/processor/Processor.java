@@ -5,7 +5,6 @@ import java.util.*;
 import edu.upenn.cit594.datamanagement.CovidDataReader;
 import edu.upenn.cit594.datamanagement.PopulationDataReader;
 import edu.upenn.cit594.datamanagement.PropertiesDataReader;
-import edu.upenn.cit594.datamanagement.PropertiesReader;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.CovidData;
 import edu.upenn.cit594.util.PopulationData;
@@ -29,7 +28,7 @@ public class Processor {
 	private static HashMap<Integer, Integer> avgMktValMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> avgLivMap = new HashMap<Integer, Integer>();
 	private static HashMap<Integer, Integer> MktValPerCapMap= new HashMap<Integer, Integer>();
-	private static int maxZip = 0;
+	private static HashMap<Integer, List<Double>> minMaxMap = new HashMap<Integer, List<Double>>();
 	
 
 	public Processor(CovidDataReader covidReader, PopulationDataReader popReader, PropertiesDataReader propertiesDataReader) throws Exception{
@@ -39,7 +38,6 @@ public class Processor {
 		this.popData = popReader.getAllRows();
 		this.propertiesDataReader = propertiesDataReader;
 		this.propertiesData = propertiesDataReader.getAllRows();
-
 	}
 	
 	// This method returns the answer to 1
@@ -73,17 +71,20 @@ public class Processor {
 			PopulationData data = this.popData.get(i);
 			int zip = data.getZipcode();
 			double population = data.getPopulation();
-			double fullyVaccinated = 0;
 			
-			for(int j =0; j < this.covidData.size(); j++) {
-				if(this.covidData.get(j).getZipcode() == zip ) {
-					if(this.covidData.get(j).getFullyVaccinated() != 0) {
-						fullyVaccinated = this.covidData.get(j).getFullyVaccinated();
-					}
+			if(population == 0) {
+				continue;
+			}
+		
+			Integer fullyVaccinated = 0;
+			for(int j = this.covidData.size() -1; j >=0 ; j--) {
+				if(this.covidData.get(j).getZipcode() == zip) {
+					fullyVaccinated = this.covidData.get(j).getFullyVaccinated();
+					break;
 				}
 			}
 			
-			if(fullyVaccinated != 0 & population != 0) {
+			if(fullyVaccinated != null && fullyVaccinated != 0) {
 				double perCapitaVaccinations = fullyVaccinated/population;
 				String value = (String) String.format("%.4f", perCapitaVaccinations);
 				double ret = Double.parseDouble(value);
@@ -110,17 +111,22 @@ public class Processor {
 			PopulationData data = this.popData.get(i);
 			int zip = data.getZipcode();
 			double population = data.getPopulation();
-			double partiallyVaccinated = 0;
-			for(int j =0; j < this.covidData.size(); j++) {
+			
+			if(population == 0) {
+				continue;
+			}
+			
+			Integer partiallyVaccinated = 0;
+			for(int j = this.covidData.size()-1; j >= 0; j--) {
 				if(this.covidData.get(j).getZipcode() == zip ) {
-					if(this.covidData.get(j).getPartiallyVaccinated() != 0) {
-						partiallyVaccinated = this.covidData.get(j).getPartiallyVaccinated();
-					}
+					partiallyVaccinated = this.covidData.get(j).getPartiallyVaccinated();
+					break;
 				}
 			}
 
-			if(partiallyVaccinated != 0 & population != 0) {
-				double perCapitaVaccinations = partiallyVaccinated/population;
+			if(partiallyVaccinated != null && partiallyVaccinated != 0) {
+				double partiallyVacc = partiallyVaccinated;
+				double perCapitaVaccinations = partiallyVacc/population;
 				String value = (String) String.format("%.4f", perCapitaVaccinations);
 				double ret = Double.parseDouble(value);
 				map.put(zip, ret);
@@ -152,7 +158,7 @@ public class Processor {
 			}
 		}
 		
-		if(total == 0 | count == 0) {
+		if(count == 0) {
 			return 0;
 		}
 		
@@ -173,7 +179,7 @@ public class Processor {
 	// This method returns the answer to 3
 	public int getAverageMktValue(int zip) {
 		
-		if(avgMktValMap != null) {
+		if(!avgMktValMap.isEmpty()) {
 			for(int key: avgMktValMap.keySet()) {
 				if(key == zip) {
 					return avgMktValMap.get(key);
@@ -191,7 +197,7 @@ public class Processor {
 	// This method returns the answer to 4
 	public int getAverageLivArea(int zip) {
 		
-		if(avgLivMap != null) {
+		if(!avgLivMap.isEmpty()) {
 			for(int key: avgLivMap.keySet()) {
 				if(key == zip) {
 					return avgLivMap.get(key);
@@ -213,7 +219,7 @@ public class Processor {
 			return 0;
 		}
 		
-		if(MktValPerCapMap != null) {
+		if(!MktValPerCapMap.isEmpty()) {
 			for(int key: MktValPerCapMap.keySet()) {
 				if(key == zip) {
 					return MktValPerCapMap.get(key);
@@ -221,14 +227,15 @@ public class Processor {
 			}
 		}
 		
-		double population = 0;
+		Integer population = null;
 		for(int i = 0; i < this.popData.size(); i++) {
 			if(this.popData.get(i).getZipcode() == zip) {
 				population = this.popData.get(i).getPopulation();
 			}
 		}
 		
-		if(population == 0) {
+		// If population is 0 or null then return 0;
+		if(population == 0 || population == null) {
 			MktValPerCapMap.put(zip, 0);
 			return 0;
 		}
@@ -262,24 +269,65 @@ public class Processor {
 		return ret;
 		
 	}
-	//This method returns the answer to 6
-	public int getZipWithHighestFullVaccinationPerCapita(){
+	//This method returns the answer to 6 - get Highest Mkt Value and Lowest Mkt Value for zip with highest full vaccination per capita
+	public HashMap<Integer, List<Double>> getZipWithHighestFullVaccinationPerCapita(){
 		
-		if(maxZip != 0) {
-			return maxZip;
+		if(!minMaxMap.isEmpty()) {
+			return minMaxMap;
 		}
 
 		TreeMap<Integer, Double> map;
-		if (fullMap != null){
+		if (!fullMap.isEmpty()){
 			map = fullMap;
 		}
 		else{
 			map = getFullyVaccinatedPerCapita();
 		}
 
-		//double maxVaccinePerCapita = (Collections.max(map.values()));
-		int zipWithMaxFullVacc = (Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey());
-		maxZip = zipWithMaxFullVacc;
-		return zipWithMaxFullVacc;
+		// get zip with the max fullyvaccinated from map
+		Double m = null;
+		Integer zip = null;
+		for(int key: map.keySet()) {
+			// initialize m if not initialized by the first entry
+			if(m == null) {
+				m = map.get(key);
+				zip = key;
+			}
+			else if(m < map.get(key)){
+				m = map.get(key);
+				zip = key;
+			}
+		}
+	
+		//System.out.println(zip);
+		
+		// get max market value for zipcode from propertiesData
+		Double max = null;
+		Double min = null;
+		
+		for (PropertiesData data : propertiesData) {
+			if (data.getZipcode() == zip && data.getMarketValue() != null) {
+				// check if max and min have been initialized if not initialize with first non-null market value for the zip
+				if(max == null | min == null) {
+					max = data.getMarketValue();
+					min = data.getMarketValue();
+				}
+				else {
+					if(data.getMarketValue() > max) {
+						max = data.getMarketValue();
+					}
+					if(data.getMarketValue() < min) {
+						min = data.getMarketValue();
+					}
+				}
+			}
+		}
+	
+		ArrayList<Double> list = new ArrayList<Double>();
+		list.add(max);
+		list.add(min);
+		minMaxMap.put(zip, list);
+		
+		return minMaxMap;
 	}
 }

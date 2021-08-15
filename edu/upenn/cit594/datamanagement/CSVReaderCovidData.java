@@ -1,9 +1,10 @@
 package edu.upenn.cit594.datamanagement;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.util.CovidData;
@@ -16,64 +17,75 @@ public class CSVReaderCovidData implements CovidDataReader{
 	public CSVReaderCovidData(String filename) {
 		this.filename = filename;
 	}
-
+	
 	public List<CovidData> getAllRows() throws Exception {
 		
-		List<CovidData> list = new ArrayList<CovidData>();
-		
-		Scanner in = new Scanner(new File(this.filename));
-		logger.logString(filename);
-
-		int line = 0;
+	    File inputFile = new File(filename);
+        
+		long time = System.currentTimeMillis();
+		String out = Long.toString(time);
+		out += " " + filename;
+		logger.logString(out); 
+        
+        BufferedReader file = new BufferedReader(new FileReader(inputFile));
+       
+    	List<CovidData> list = new ArrayList<CovidData>();
+    	
+        String line = file.readLine();
+        String txt[]  = line.split(",",-1);
 		int timestampIndex = -1;
 		int zipIndex = -1;
 		int partialIndex = -1;
 		int fullIndex = -1;
-		while(in.hasNextLine()) {
-			String text = in.nextLine();
-			String txt[]  = text.split(",",-1);
+        for(int i = 0; i < txt.length; i++) {
+			String str = txt[i];
+		
+			while(str.contains("\"")) {
+				int index = str.indexOf("\"");
+				str = str.substring(0, index) + str.substring(index+1);
+			}
+
+			if(str.equals("etl_timestamp")) {
+				timestampIndex = i;
+			}
+			else if(str.equals("zip_code")) {
+				zipIndex = i;
+			}
+			else if(str.equals("partially_vaccinated")) {
+				partialIndex = i;
+			}
+			else if(str.equals("fully_vaccinated")) {
+				fullIndex = i;
+			}
+		}
+        
+        // move onto next line
+        line = file.readLine();
+
+		while(line!= null) {
+
+			String text[]  = line.split(",",-1);
+			String timeStamp = text[timestampIndex];
+			Integer zipcode = null;
+			Integer partiallyVaccinated = null;
+			Integer fullyVaccinated = null;
 			
-			if(line == 0) {				
-				for(int i = 0; i < txt.length; i++) {
-					String str = txt[i];
-					
-					if(str.equals("etl_timestamp")) {
-						timestampIndex = i;
-					}
-					else if(str.equals("zip_code")) {
-						zipIndex = i;
-					}
-					else if(str.equals("partially_vaccinated")) {
-						partialIndex = i;
-					}
-					else if(str.equals("fully_vaccinated")) {
-						fullIndex = i;
-					}
-				}
+			try {
+				zipcode = Integer.parseInt(text[zipIndex]);
+				partiallyVaccinated = Integer.parseInt(text[partialIndex]);
+			    fullyVaccinated = Integer.parseInt(text[fullIndex]);
 			}
-			else {
+			catch(NumberFormatException e) {
 				
-				String timeStamp = txt[timestampIndex];
-				int zipcode = 0;
-				int partiallyVaccinated = 0;
-				int fullyVaccinated = 0;
-				
-				try {
-					zipcode = Integer.parseInt(txt[zipIndex]);
-					partiallyVaccinated = Integer.parseInt(txt[partialIndex]);
-				    fullyVaccinated = Integer.parseInt(txt[fullIndex]);
-				}
-				catch(NumberFormatException e) {
-					
-				}
-				 
-				
-				if(zipcode != 0 & !timeStamp.isBlank()) {
-					CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
-					list.add(data);
-				}
 			}
-			line++;
+			 
+			
+			if(zipcode != null && !timeStamp.isBlank()) {
+				CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
+				list.add(data);
+			}
+			
+			line = file.readLine();
 		}
 
 		return list;

@@ -2,27 +2,27 @@ package edu.upenn.cit594.util;
 
 public class CovidData {
 	
-	private final int zipcode;
-	private final int partiallyVaccinated;
-	private final int fullyVaccinated;
+	private final Integer zipcode;
+	private final Integer partiallyVaccinated;
+	private final Integer fullyVaccinated;
 	private final String timestamp;
 	
-	public CovidData(long zipcode, long partiallyVaccinated, long fullyVaccinated, String timestamp) {
-		this.zipcode = (int) zipcode;
-		this.partiallyVaccinated = (int) partiallyVaccinated;
-		this.fullyVaccinated = (int) fullyVaccinated;
+	public CovidData(Integer zipcode, Integer partiallyVaccinated, Integer fullyVaccinated, String timestamp) {
+		this.zipcode = zipcode;
+		this.partiallyVaccinated = partiallyVaccinated;
+		this.fullyVaccinated =  fullyVaccinated;
 		this.timestamp = timestamp;
 	}
 
-	public int getZipcode() {
+	public Integer getZipcode() {
 		return zipcode;
 	}
 
-	public int getPartiallyVaccinated() {
+	public Integer getPartiallyVaccinated() {
 		return partiallyVaccinated;
 	}
 
-	public int getFullyVaccinated() {
+	public Integer getFullyVaccinated() {
 		return fullyVaccinated;
 	}
 

@@ -18,12 +18,15 @@ import edu.upenn.cit594.ui.CommandUserInterface;
 public class Main {
 
 	public static void main(String[] args) {
-
+		
+		long time = System.currentTimeMillis();
+		String out = Long.toString(time);
+		
 		if(args.length != 4) {
 			System.out.println("Error in Syntax: covidDataFilename propertiesDataFilename popDataFilename logFilename");
 			return;
 		}
-	
+
 		String covidDataFilename = args[0];
 		String propertiesDataFilename = args[1];
 		String popDataFilename = args[2];
@@ -38,10 +41,10 @@ public class Main {
 		}
 
 		// logs runtime arguments
-		logger.logStringArray(args);
+		out = out + " " + args[0] + " " + args[1] + " " + args[2] + " " + args[3];
+		logger.logString(out);
 
 		CovidDataReader covidReader = null;
-		
 		if(covidDataFilename.substring(covidDataFilename.length()-4).toLowerCase().equals(".csv")) {
 			covidReader = new CSVReaderCovidData(covidDataFilename);
 		}
@@ -59,12 +62,11 @@ public class Main {
 		
 		try {
 			Processor processor = new Processor(covidReader, popReader, propertiesDataReader);
-
 			CommandUserInterface ui = new CommandUserInterface(processor);
 			ui.start();
 		} catch (Exception e) {
-			e.getStackTrace();
-			e.printStackTrace();
+			//e.getStackTrace();
+			//e.printStackTrace();
 			System.out.println("One of the data files cannot be opened");
 			return;
 		}

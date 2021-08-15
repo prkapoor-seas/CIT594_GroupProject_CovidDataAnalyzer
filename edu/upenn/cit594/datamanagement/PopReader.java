@@ -1,6 +1,8 @@
 package edu.upenn.cit594.datamanagement;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,20 +21,26 @@ public class PopReader implements PopulationDataReader{
 	}
 
 	public List<PopulationData> getAllRows() throws Exception {
-		
-		List<PopulationData> list = new ArrayList<PopulationData>();
-		
-		Scanner in = new Scanner(new File(this.filename));
 
-		logger.logString(filename);
+		 File inputFile = new File(filename);
+		 
+		 long time = System.currentTimeMillis();
+		String out = Long.toString(time);
+		out += " " + filename;
+		logger.logString(out); 
+	     
+	     BufferedReader file = new BufferedReader(new FileReader(inputFile));
+	     
+	     List<PopulationData> list = new ArrayList<PopulationData>();
+	        
+		String line = file.readLine();
 		
-		while(in.hasNextLine()) {
-			String text = in.nextLine();
-			String txt[]  = text.split(" ",-1);
-			
-			try {
-				int zipcode = Integer.parseInt(txt[0]);
-				int population = Integer.parseInt(txt[1]);
+		 while(line != null) {
+			 String txt[]  = line.split(" ",-1);
+			 
+			 try {
+				Integer zipcode = Integer.parseInt(txt[0]);
+				Integer population = Integer.parseInt(txt[1]);
 				PopulationData data = new PopulationData(zipcode, population);
 				list.add(data);
 			}
@@ -40,7 +48,9 @@ public class PopReader implements PopulationDataReader{
 				
 			}
 			
-		}
+			line = file.readLine();
+		 }
+		
 		
 		return list;
 	}
