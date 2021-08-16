@@ -64,7 +64,7 @@ public class PropertiesReader implements PropertiesDataReader {
             	strList.add(match);
             }
             
-            String zip =  strList.get(zipIndex);
+            String zip =  strList.get(zipIndex).trim();
             
             if(zip.length() < 5) {
             	line = file.readLine();
@@ -72,8 +72,8 @@ public class PropertiesReader implements PropertiesDataReader {
             }
             
             zip = zip.substring(0,5);
-            String livableArea = strList.get(livableAreaIndex);
-            String marketValue = strList.get(marketValueIndex);
+            String livableArea = strList.get(livableAreaIndex).trim();
+            String marketValue = strList.get(marketValueIndex).trim();
             
             Integer zipCode = null;
             Double livArea = null;

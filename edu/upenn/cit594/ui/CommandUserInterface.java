@@ -21,7 +21,7 @@ public class CommandUserInterface {
 		this.in = new Scanner(System.in);
 	}
 
-	public void start() {
+	public void start() throws Exception {
 		
 		while(true) {
 			System.out.println("Enter 0 to exit \nEnter 1 to get total population across all zips \nEnter 2 to get total (partial/full) vaccinations per capita by zip \nEnter 3 to get average market value by zip \nEnter 4 to get average livable area by zip \nEnter 5 to get total residential market value per capita \nEnter 6 to get maximum and minimum market value for zip with the highest fully vaccinated per capita");
@@ -79,7 +79,7 @@ public class CommandUserInterface {
 		System.out.println("END OUTPUT");
 	}
 	
-	protected void getVaccinationsPerCapita() {
+	protected void getVaccinationsPerCapita() throws Exception {
 
 		System.out.println("Enter \"partial\" for partial vaccinations or \"full\" for full vaccinations");
 		System.out.println("> ");
@@ -105,11 +105,12 @@ public class CommandUserInterface {
 		}
 		else {
 			System.out.println("Error: Invalid choice");
+			throw new Exception();
 		}
 		
 	}
 	
-	protected void getAvgMktValue() {
+	protected void getAvgMktValue() throws Exception {
 		System.out.print("Please enter a zip code below");
 		System.out.println("> ");
 		System.out.flush();
@@ -130,11 +131,12 @@ public class CommandUserInterface {
 		}
 		catch(NumberFormatException e) {
 			System.out.println("Error: Invalid input");
+			throw new Exception();
 		}
 		
 	}
 	
-	protected void getAvgLivArea() {
+	protected void getAvgLivArea() throws Exception {
 		System.out.println("Please enter a zip code below");
 		System.out.println("> ");
 		System.out.flush();
@@ -154,11 +156,12 @@ public class CommandUserInterface {
 		}
 		catch(NumberFormatException e) {
 			System.out.println("Error: Invalid input");
+			throw new Exception();
 		}
 		
 	}
 	
-	protected void getResMktValPerCapita() {
+	protected void getResMktValPerCapita() throws Exception {
 		System.out.println("Please enter a zip code below");
 		System.out.println("> ");
 		System.out.flush();
@@ -178,6 +181,7 @@ public class CommandUserInterface {
 		}
 		catch(NumberFormatException e) {
 			System.out.println("Error: Invalid input");
+			throw new Exception();
 		}
 		
 	}

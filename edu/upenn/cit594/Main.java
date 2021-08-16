@@ -62,15 +62,23 @@ public class Main {
 
 		PropertiesDataReader propertiesDataReader = new PropertiesReader((propertiesDataFilename));
 		
+		Processor processor = null;
 		try {
-			Processor processor = new Processor(covidReader, popReader, propertiesDataReader);
-			CommandUserInterface ui = new CommandUserInterface(processor);
-			ui.start();
+			processor = new Processor(covidReader, popReader, propertiesDataReader);
+			
 		} catch (Exception e) {
 			System.out.println("One of the data files cannot be opened");
 			return;
 		}
 		
+		
+		try {
+			CommandUserInterface ui = new CommandUserInterface(processor);
+			ui.start();
+		}
+		catch(Exception e) {
+			return;
+		}
 	}
 
 }
