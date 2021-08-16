@@ -76,6 +76,7 @@ public class BasicTests {
 		int state = 0;
 		String line;
 		while ((line = output_reader.readLine()) != null) {
+		
 			if (state == 0 || state == 2) {
 				if (line.equals("BEGIN OUTPUT")) 
 					state = 1;
@@ -92,7 +93,7 @@ public class BasicTests {
 		}
 		return items;
 	}
-	
+
 
 	/* Application must be able to run basic operations in under 2 minutes */
 	@Test(timeout = 120000)

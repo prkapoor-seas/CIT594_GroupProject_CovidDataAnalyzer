@@ -45,7 +45,7 @@ public class Main {
 			System.out.println("Error in Syntax: covidDataFilename propertiesDataFilename popDataFilename logFilename");
 			return;
 		}
-
+		
 		CovidDataReader covidReader = null;
 		if(covidDataFilename.substring(covidDataFilename.length()-4).toLowerCase().equals(".csv")) {
 			covidReader = new CSVReaderCovidData(covidDataFilename);

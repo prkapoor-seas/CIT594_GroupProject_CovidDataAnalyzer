@@ -64,17 +64,18 @@ String filename;
 	           }
 	           
 	           if(zip != null && !timeStamp.isBlank()) {
-	              CovidData data = new CovidData(zip, partialVacc, fullyVacc, timeStamp);
-	            if (map.containsKey(zip)){
-	               List<CovidData> list = map.get(zip);
-	               list.add(data);
-	               map.put(zip, list);
-	            }
-	            else{
-	               List<CovidData> newList = new ArrayList<CovidData>();
-	               newList.add(data);
-	               map.put(zip, newList);
-	            }
+	  
+        		   CovidData data = new CovidData(zip, partialVacc, fullyVacc, timeStamp);
+    			   if (map.containsKey(zip)){
+		               List<CovidData> list = map.get(zip);
+		               list.add(data);
+		               map.put(zip, list);
+		            }
+		            else{
+		               List<CovidData> newList = new ArrayList<CovidData>();
+		               newList.add(data);
+		               map.put(zip, newList);
+		            }
 	           }
 	           
 	           

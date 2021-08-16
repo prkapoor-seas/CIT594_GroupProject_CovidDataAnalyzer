@@ -92,16 +92,18 @@ public class CSVReaderCovidData implements CovidDataReader{
 	         
 	         if(zipcode != null && !timeStamp.isBlank()) {
 	            CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
-	            if (map.containsKey(zipcode)){
-	               List<CovidData> list = map.get(zipcode);
-	               list.add(data);
-	               map.put(zipcode, list);
-	            }
-	            else{
-	               List<CovidData> newList = new ArrayList<CovidData>();
-	               newList.add(data);
-	               map.put(zipcode, newList);
-	            }
+            	System.out.println(1);
+            	if (map.containsKey(zipcode)){
+ 	               List<CovidData> list = map.get(zipcode);
+ 	               list.add(data);
+ 	               map.put(zipcode, list);
+ 	            } 
+ 	            else{
+ 	               List<CovidData> newList = new ArrayList<CovidData>();
+ 	               newList.add(data);
+ 	               map.put(zipcode, newList);
+ 	            }
+	            
 	         }
 	        
 	         line = file.readLine();

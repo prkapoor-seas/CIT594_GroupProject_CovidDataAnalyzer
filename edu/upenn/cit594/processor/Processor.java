@@ -49,7 +49,7 @@ public class Processor {
 		if(totalPopulation != 0) {
 			return totalPopulation;
 		}
-		
+	
 		int totalPop = 0;
 		
 		for(int key: this.popMap.keySet()) {
@@ -124,13 +124,19 @@ public class Processor {
 					}
 					
 					if(maxDate == null) {
-						maxDate = date;
-					}
-					else {
-						if(date.after(maxDate)) {
+						if(data.getFullyVaccinated() != null || data.getPartiallyVaccinated() != null) {
 							maxDate = date;
 							maxFullVacc = data.getFullyVaccinated();
 							maxPartialVacc = data.getPartiallyVaccinated();
+						}
+					}
+					else {
+						if(date.after(maxDate)) {
+							if(data.getFullyVaccinated() != null || data.getPartiallyVaccinated() != null) {
+								maxDate = date;
+								maxFullVacc = data.getFullyVaccinated();
+								maxPartialVacc = data.getPartiallyVaccinated();
+							}
 						}
 					}
 				}
