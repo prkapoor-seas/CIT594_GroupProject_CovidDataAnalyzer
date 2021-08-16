@@ -67,8 +67,6 @@ public class Main {
 			CommandUserInterface ui = new CommandUserInterface(processor);
 			ui.start();
 		} catch (Exception e) {
-			//e.getStackTrace();
-			//e.printStackTrace();
 			System.out.println("One of the data files cannot be opened");
 			return;
 		}

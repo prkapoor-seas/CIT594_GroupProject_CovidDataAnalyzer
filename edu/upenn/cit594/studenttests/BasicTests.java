@@ -131,16 +131,23 @@ public class BasicTests {
 		//System.out.println(result1);
 		String result2 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "2\nfull\n0\n");
 
-		String result3 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "4\n19104\n3\n19104\n0\n");
+		//String result3 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "4\n19104\n3\n19104\n0\n");
+
+		
+		String result3 = runMain(new String[] { "covid_data.json", "small_properties.csv", "population.txt", "small_test1.log" }, "2\npartial\n0\n");
+		//System.out.println(result1);
+		String result4 = runMain(new String[] { "covid_data.csv", "small_properties.csv", "population.txt", "small_test2.log" }, "2\npartial\n0\n");
 
 		
 		Set<String> sResult1 = new HashSet<>(extractResults(result1));
 		Set<String> sResult2 = new HashSet<>(extractResults(result2));
 		Set<String> sResult3 = new HashSet<>(extractResults(result3));
+		Set<String> sResult4 = new HashSet<>(extractResults(result4));
 		//System.out.println(sResult1);
 		//System.out.println(sResult2);
 		
 		assertTrue("Repeated execution failed", sResult1.equals(sResult2));
+		assertTrue("Repeated execution failed", sResult3.equals(sResult4));
 		
 		/* This only checks the rough line formatting, not the exact format and not the values
 		 * be sure to write more tests of your own

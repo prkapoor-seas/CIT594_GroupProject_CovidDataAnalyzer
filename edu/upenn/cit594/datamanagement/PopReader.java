@@ -39,6 +39,11 @@ public class PopReader implements PopulationDataReader{
 		 while(line != null) {
 			 String txt[]  = line.split(" ",-1);
 			 
+			 if(txt[0].trim().substring(0, 5).length() < 5) {
+				 line = file.readLine();
+				 continue;
+			 }
+			 
 			 try {
 				Integer zipcode = Integer.parseInt(txt[0].trim());
 				Integer population = Integer.parseInt(txt[1].trim());

@@ -32,8 +32,8 @@ public class CSVReaderCovidData implements CovidDataReader{
 	       
 	       HashMap<Integer, List<CovidData>> map = new HashMap<Integer, List<CovidData>>();
 	       
-	        String line = file.readLine();
-	        String txt[]  = line.split(",",-1);
+	      String line = file.readLine();
+	      String txt[]  = line.split(",",-1);
 	      int timestampIndex = -1;
 	      int zipIndex = -1;
 	      int partialIndex = -1;
@@ -71,8 +71,13 @@ public class CSVReaderCovidData implements CovidDataReader{
 	         Integer partiallyVaccinated = null;
 	         Integer fullyVaccinated = null;
 	         
+	         if(text[zipIndex].trim().substring(0, 5).length() <5) {
+	        	 line = file.readLine(); // read next line and continue
+	        	 continue;
+	         }
+	         
 	         try {
-	            zipcode = Integer.parseInt(text[zipIndex].trim());
+	            zipcode = Integer.parseInt(text[zipIndex].trim().substring(0,5));
 	         }
 	         catch(Exception e) {
 	            
@@ -92,7 +97,6 @@ public class CSVReaderCovidData implements CovidDataReader{
 	         
 	         if(zipcode != null && !timeStamp.isBlank()) {
 	            CovidData data = new CovidData(zipcode, partiallyVaccinated, fullyVaccinated, timeStamp);
-            	System.out.println(1);
             	if (map.containsKey(zipcode)){
  	               List<CovidData> list = map.get(zipcode);
  	               list.add(data);

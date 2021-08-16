@@ -46,6 +46,10 @@ String filename;
 	           
 	           try {
 	              zip = (int) (long) jo.get("zip_code");
+	              String zipCode = String.valueOf(zip);
+	              if(zipCode.trim().substring(0, 5).length() < 5) {
+	            	  continue;
+	              }
 	           }
 	           catch(Exception e) {
 	              
